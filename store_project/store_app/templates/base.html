@@ -6,16 +6,16 @@
     <title>Zay Shop</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="apple-touch-icon" href="static/icons/apple-icon.png">
-    <link rel="shortcut icon" type="image/x-icon" href="static/icons/favicon.ico">
+    <link rel="apple-touch-icon" href="{% static 'icons/apple-icon.png'%}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'icons/favicon.icon' %}">
 
-    <link rel="stylesheet" href="static/css/bootstrap.min.css">
-    <link rel="stylesheet" href="static/css/templatemo.css">
-    <link rel="stylesheet" href="static/css/custom.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/templatemo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
 
     <!-- Load fonts style after rendering the layout styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
-    <link rel="stylesheet" href="static/css/fontawesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
 <!--
 
 TemplateMo 559 Zay Shop
@@ -27,12 +27,13 @@ https://templatemo.com/tm-559-zay-shop
 <body>
 {% include "navbar.html"  %}
 {% block content %} {% endblock %}
+{% include "bottom_banner.html"  %}
 {% include "footer.html"  %}
 
-    <script src="static/scripts/jquery-1.11.0.min.js"></script>
-    <script src="static/scripts/jquery-migrate-1.2.1.min.js"></script>
-    <script src="static/scripts/bootstrap.bundle.min.js"></script>
-    <script src="static/scripts/templatemo.js"></script>
-    <script src="static/scripts/custom.js"></script>
+    <script src="{% static 'scripts/jquery-1.11.0.min.js' %}"></script>
+    <script src="{% static 'scripts/jquery-migrate-1.2.1.min.js' %}"></script>
+    <script src="{% static 'scripts/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'scripts/templatemo.js' %}"></script>
+    <script src="{% static 'scripts/custom.js' %}"></script>
 </body>
 </html>

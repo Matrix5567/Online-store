@@ -1,0 +1,29 @@
+[
+  {
+    "product_name" : "Sony LED TV",
+    "product_description" : "LED TV",
+    "product_brand_name" : "Sony",
+    "product_price" : "120000",
+    "product_image" : "product_main_images/a.jpeg",
+    "product_Type_name" : "Electronics",
+    "product_Sub_type_name" : "LED TV",
+    "is_featured_product" : "False",
+    "subimage": [
+      {
+        "product_subimage" : "product_sub_images/a1.jpeg"
+      },
+      {
+        "product_subimage" : "product_sub_images/a2.jpeg"
+      },
+      {
+        "product_subimage" : "product_sub_images/a3.jpeg"
+      },
+      {
+        "product_subimage" : "product_sub_images/a4.jpeg"
+      },
+      {
+        "product_subimage" : "product_sub_images/a5.jpg"
+      }
+    ]
+  }
+]
