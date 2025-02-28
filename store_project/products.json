@@ -1,28 +1,43 @@
 [
   {
-    "product_name" : "Sony LED TV",
-    "product_description" : "LED TV",
-    "product_brand_name" : "Sony",
-    "product_price" : "120000",
-    "product_image" : "product_main_images/a.jpeg",
-    "product_Type_name" : "Electronics",
-    "product_Sub_type_name" : "LED TV",
+    "product_name" : "Dress",
+    "product_description" : "dress for various occassions",
+    "product_brand_name" : "lee",
+    "product_price" : "756",
+    "product_image" : "product_main_images/c1.jpg",
+    "product_Type_name" : "Clothing",
+    "product_Sub_type_name" : "Female",
     "is_featured_product" : "False",
     "subimage": [
       {
-        "product_subimage" : "product_sub_images/a1.jpeg"
+        "product_subimage" : "product_sub_images/c1.jpg"
       },
       {
-        "product_subimage" : "product_sub_images/a2.jpeg"
+        "product_subimage" : "product_sub_images/c2.jpg"
       },
       {
-        "product_subimage" : "product_sub_images/a3.jpeg"
+        "product_subimage" : "product_sub_images/c3.jpg"
       },
       {
-        "product_subimage" : "product_sub_images/a4.jpeg"
+        "product_subimage" : "product_sub_images/c4.jpg"
+      },
+       {
+        "product_subimage" : "product_sub_images/c5.jpg"
       },
       {
-        "product_subimage" : "product_sub_images/a5.jpg"
+        "product_subimage" : "product_sub_images/c6.jpg"
+      },
+      {
+        "product_subimage" : "product_sub_images/c7.jpg"
+      },
+      {
+        "product_subimage" : "product_sub_images/c8.jpg"
+      },
+       {
+        "product_subimage" : "product_sub_images/c9.jpeg"
+      },
+       {
+        "product_subimage" : "product_sub_images/c2.jpg"
       }
     ]
   }

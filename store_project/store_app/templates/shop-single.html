@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col-lg-5 mt-5">
                     <div class="card mb-3">
-                        <img class="card-img img-fluid" src="" alt="Card image cap" id="product-detail">
+                        <img class="card-img img-fluid" src="{{ sub_images.first.product.product_image.url }}" alt="Card image cap" id="product-detail">
                     </div>
                     <div class="row">
                         <!--Start Controls-->
@@ -42,72 +42,24 @@
                         <div id="multi-item-example" class="col-10 carousel slide carousel-multi-item" data-bs-ride="carousel">
                             <!--Start Slides-->
                             <div class="carousel-inner product-links-wap" role="listbox">
-
+                                {% for product in sub_images %}
+                                {% if forloop.counter0|divisibleby:3 %}
                                 <!--First slide-->
-                                <div class="carousel-item active">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <a href="#">
-                                                <img class="card-img img-fluid" src="" alt="Product Image 1">
-                                            </a>
-                                        </div>
-                                        <div class="col-4">
-                                            <a href="#">
-                                                <img class="card-img img-fluid" src="" alt="Product Image 2">
-                                            </a>
-                                        </div>
-                                        <div class="col-4">
-                                            <a href="#">
-                                                <img class="card-img img-fluid" src="" alt="Product Image 3">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/.First slide-->
 
-                                <!--Second slide-->
-                                <div class="carousel-item">
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
                                     <div class="row">
+                                      {% endif %}
                                         <div class="col-4">
                                             <a href="#">
-                                                <img class="card-img img-fluid" src="" alt="Product Image 4">
+                                                <img class="card-img img-fluid" src="{{ product.product_subimage.url }}" alt="Product Image 1">
                                             </a>
                                         </div>
-                                        <div class="col-4">
-                                            <a href="#">
-                                                <img class="card-img img-fluid" src="" alt="Product Image 5">
-                                            </a>
-                                        </div>
-                                        <div class="col-4">
-                                            <a href="#">
-                                                <img class="card-img img-fluid" src="" alt="Product Image 6">
-                                            </a>
-                                        </div>
+                                       {% if forloop.counter|divisibleby:3 or forloop.last %}
                                     </div>
                                 </div>
-                                <!--/.Second slide-->
+                                {% endif %}
+                                {% endfor %}
 
-                                <!--Third slide-->
-                                <div class="carousel-item">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <a href="#">
-                                                <img class="card-img img-fluid" src="" alt="Product Image 7">
-                                            </a>
-                                        </div>
-                                        <div class="col-4">
-                                            <a href="#">
-                                                <img class="card-img img-fluid" src="" alt="Product Image 8">
-                                            </a>
-                                        </div>
-                                        <div class="col-4">
-                                            <a href="#">
-                                                <img class="card-img img-fluid" src="" alt="Product Image 9">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/.Third slide-->
                             </div>
                             <!--End Slides-->
                         </div>
@@ -126,27 +78,27 @@
                 <div class="col-lg-7 mt-5">
                     <div class="card">
                         <div class="card-body">
-                            <h1 class="h2">Active Wear</h1>
-                            <p class="h3 py-2">$25.00</p>
-                            <p class="py-2">
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-secondary"></i>
-                                <span class="list-inline-item text-dark">Rating 4.8 | 36 Comments</span>
-                            </p>
+                            <h1 class="h2">{{product.product_name}}</h1>
+                            <p class="h3 py-2">${{product.product_price}}</p>
+<!--                            <p class="py-2">-->
+<!--                                <i class="fa fa-star text-warning"></i>-->
+<!--                                <i class="fa fa-star text-warning"></i>-->
+<!--                                <i class="fa fa-star text-warning"></i>-->
+<!--                                <i class="fa fa-star text-warning"></i>-->
+<!--                                <i class="fa fa-star text-secondary"></i>-->
+<!--                                <span class="list-inline-item text-dark">Rating 4.8 | 36 Comments</span>-->
+<!--                            </p>-->
                             <ul class="list-inline">
                                 <li class="list-inline-item">
-                                    <h6>Brand:</h6>
+                                    <h6>Brand:{{product.product_brand_name}}</h6>
                                 </li>
                                 <li class="list-inline-item">
-                                    <p class="text-muted"><strong>Easy Wear</strong></p>
+<!--                                    <p class="text-muted"><strong>Easy Wear</strong></p>-->
                                 </li>
                             </ul>
 
-                            <h6>Description:</h6>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temp incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse. Donec condimentum elementum convallis. Nunc sed orci a diam ultrices aliquet interdum quis nulla.</p>
+                            <h6>Description:{{product.product_description}}</h6>
+                            <p></p>
                             <ul class="list-inline">
                                 <li class="list-inline-item">
                                     <h6>Avaliable Color :</h6>
@@ -211,9 +163,6 @@
     </section>
     <!-- Close Content -->
 
-    <!-- Start Article -->
-    <!-- End Article -->
-
     <!-- Start Slider Script -->
     <script src="{% static 'scripts/slick.min.js' %}"></script>
     <script>
@@ -250,3 +199,4 @@
     <!-- End Slider Script -->
 
 {% endblock %}
+

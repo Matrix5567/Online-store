@@ -18,7 +18,7 @@ class CustomUser(AbstractUser):
 
 class ProductTypes(models.Model):
     product_Type_name = models.CharField(max_length=255)
-    product_Sub_type_name = models.CharField(max_length=255)
+    product_Sub_type_name  = models.CharField(max_length=255)
     is_featured_product = models.BooleanField(default=False,null=True)
 
 class Products(models.Model):
