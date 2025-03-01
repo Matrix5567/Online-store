@@ -16,18 +16,26 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
 
-class ProductTypes(models.Model):
+class Categories(models.Model):
+    category_image = models.ImageField(upload_to='category_image/',null=True)
     product_Type_name = models.CharField(max_length=255)
+    URL = models.CharField(max_length=25,null=True)
     product_Sub_type_name  = models.CharField(max_length=255)
     is_featured_product = models.BooleanField(default=False,null=True)
+    def __str__(self):
+        return self.product_Type_name
 
 class Products(models.Model):
-    product_type = models.ForeignKey(ProductTypes,on_delete=models.CASCADE,related_name='product_types',null=True)
+    product_type = models.ForeignKey(Categories,on_delete=models.CASCADE,related_name='product_types',null=True)
     product_name = models.CharField(max_length=255)
+    product_color = models.CharField(max_length=50,null=True)
     product_description = models.CharField(max_length=255)
     product_brand_name = models.CharField(max_length=255,null=True)
     product_price = models.IntegerField(null=True)
     product_image = models.ImageField(upload_to='product_main_images/')
+
+    def __str__(self):
+        return self.product_name
 
 class ProductsSubimage(models.Model):
     product = models.ForeignKey(Products,on_delete=models.CASCADE,related_name='subimages')

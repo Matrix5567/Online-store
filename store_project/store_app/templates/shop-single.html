@@ -27,7 +27,8 @@
             <div class="row">
                 <div class="col-lg-5 mt-5">
                     <div class="card mb-3">
-                        <img class="card-img img-fluid" src="{{ sub_images.first.product.product_image.url }}" alt="Card image cap" id="product-detail">
+                        <img class="card-img img-fluid" src="{{ sub_images.first.product.product_image.url }}"
+                             style="width:100%;height:250px;object-fit:cover;" alt="Card image cap" id="product-detail">
                     </div>
                     <div class="row">
                         <!--Start Controls-->
@@ -51,7 +52,8 @@
                                       {% endif %}
                                         <div class="col-4">
                                             <a href="#">
-                                                <img class="card-img img-fluid" src="{{ product.product_subimage.url }}" alt="Product Image 1">
+                                                <img class="card-img img-fluid"
+                                                     style="width:100%;height:137px;object-fit:cover;" src="{{ product.product_subimage.url }}" alt="Product Image 1">
                                             </a>
                                         </div>
                                        {% if forloop.counter|divisibleby:3 or forloop.last %}
@@ -79,21 +81,12 @@
                     <div class="card">
                         <div class="card-body">
                             <h1 class="h2">{{product.product_name}}</h1>
-                            <p class="h3 py-2">${{product.product_price}}</p>
-<!--                            <p class="py-2">-->
-<!--                                <i class="fa fa-star text-warning"></i>-->
-<!--                                <i class="fa fa-star text-warning"></i>-->
-<!--                                <i class="fa fa-star text-warning"></i>-->
-<!--                                <i class="fa fa-star text-warning"></i>-->
-<!--                                <i class="fa fa-star text-secondary"></i>-->
-<!--                                <span class="list-inline-item text-dark">Rating 4.8 | 36 Comments</span>-->
-<!--                            </p>-->
+                            <p class="h3 py-2">₹{{product.product_price}}</p>
                             <ul class="list-inline">
                                 <li class="list-inline-item">
                                     <h6>Brand:{{product.product_brand_name}}</h6>
                                 </li>
                                 <li class="list-inline-item">
-<!--                                    <p class="text-muted"><strong>Easy Wear</strong></p>-->
                                 </li>
                             </ul>
 
@@ -104,19 +97,8 @@
                                     <h6>Avaliable Color :</h6>
                                 </li>
                                 <li class="list-inline-item">
-                                    <p class="text-muted"><strong>White / Black</strong></p>
+                                    <p class="text-muted"><strong>{{product.product_color}}</strong></p>
                                 </li>
-                            </ul>
-
-                            <h6>Specification:</h6>
-                            <ul class="list-unstyled pb-3">
-                                <li>Lorem ipsum dolor sit</li>
-                                <li>Amet, consectetur</li>
-                                <li>Adipiscing elit,set</li>
-                                <li>Duis aute irure</li>
-                                <li>Ut enim ad minim</li>
-                                <li>Dolore magna aliqua</li>
-                                <li>Excepteur sint</li>
                             </ul>
 
                             <form action="" method="GET">

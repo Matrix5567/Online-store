@@ -1,43 +1,41 @@
 [
   {
-    "product_name" : "Dress",
-    "product_description" : "dress for various occassions",
-    "product_brand_name" : "lee",
+    "product_name" : "Shirt",
+    "product_description" : "Shirt for various occassions",
+    "product_brand_name" : "Peter England",
     "product_price" : "756",
-    "product_image" : "product_main_images/c1.jpg",
+    "product_image" : "product_main_images/d1.jpeg",
+    "product_color" : "blue",
     "product_Type_name" : "Clothing",
-    "product_Sub_type_name" : "Female",
-    "is_featured_product" : "False",
+    "product_Sub_type_name" : "Male",
+    "is_featured_product" : "True",
     "subimage": [
       {
-        "product_subimage" : "product_sub_images/c1.jpg"
+        "product_subimage" : "product_sub_images/d1.jpeg"
       },
       {
-        "product_subimage" : "product_sub_images/c2.jpg"
+        "product_subimage" : "product_sub_images/d2.jpeg"
       },
       {
-        "product_subimage" : "product_sub_images/c3.jpg"
+        "product_subimage" : "product_sub_images/d3.jpeg"
       },
       {
-        "product_subimage" : "product_sub_images/c4.jpg"
+        "product_subimage" : "product_sub_images/d4.jpeg"
       },
        {
-        "product_subimage" : "product_sub_images/c5.jpg"
+        "product_subimage" : "product_sub_images/d5.jpeg"
       },
       {
-        "product_subimage" : "product_sub_images/c6.jpg"
+        "product_subimage" : "product_sub_images/d3.jpeg"
       },
       {
-        "product_subimage" : "product_sub_images/c7.jpg"
-      },
-      {
-        "product_subimage" : "product_sub_images/c8.jpg"
+        "product_subimage" : "product_sub_images/d4.jpeg"
       },
        {
-        "product_subimage" : "product_sub_images/c9.jpeg"
+        "product_subimage" : "product_sub_images/d2.jpeg"
       },
        {
-        "product_subimage" : "product_sub_images/c2.jpg"
+        "product_subimage" : "product_sub_images/d6.jpeg"
       }
     ]
   }
