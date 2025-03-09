@@ -40,3 +40,4 @@ class Products(models.Model):
 class ProductsSubimage(models.Model):
     product = models.ForeignKey(Products,on_delete=models.CASCADE,related_name='subimages')
     product_subimage = models.ImageField(upload_to='product_sub_images/')
+

@@ -1,0 +1,10 @@
+.table img {
+    object-fit: cover;
+    border-radius: 5px;
+}
+.btn-sm {
+    padding: 5px 10px;
+}
+.card {
+    border-radius: 10px;
+}

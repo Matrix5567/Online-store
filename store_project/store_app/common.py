@@ -22,3 +22,4 @@ def categories(URL):
     else:
         prod_cat = Categories.objects.all()
     return prod_cat
+

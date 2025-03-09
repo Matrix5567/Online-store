@@ -8,7 +8,6 @@ https://templatemo.com/tm-559-zay-shop
 
 'use strict';
 $(document).ready(function() {
-
     // Accordion
     var all_panels = $('.templatemo-accordion > li > ul').hide();
 
@@ -30,17 +29,23 @@ $(document).ready(function() {
       return false;
     });
     $('#btn-minus').click(function(){
-      var val = $("#var-value").html();
-      val = (val=='1')?val:val-1;
-      $("#var-value").html(val);
-      $("#product-quanity").val(val);
+      var val = parseInt($("#var-value").html());
+      var unitprice = parseInt($("#unitprice").html());
+      var newval = val - 1;
+      var newprice = newval*unitprice;
+      if(newval>0){
+      $("#var-value").html(newval);
+      $("#productprice").html(newprice);
+      }
       return false;
     });
     $('#btn-plus').click(function(){
       var val = $("#var-value").html();
       val++;
+      var price = parseInt($("#unitprice").html());
+      var newprice = val*price;
       $("#var-value").html(val);
-      $("#product-quanity").val(val);
+      $("#productprice").html(newprice);
       return false;
     });
     $('.btn-size').click(function(){

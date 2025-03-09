@@ -26,3 +26,6 @@ def shop(request,key=None):
 def single(request,id):
     return render(request,'shop-single.html',{'sub_images':fetch_product_subimage(id),
                                               'product':fetch_single_product(id=id,product_type=False)})
+
+def cartpage(request):
+    return render(request,'cart.html')
