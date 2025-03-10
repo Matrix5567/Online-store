@@ -7,7 +7,6 @@ from django.conf import settings
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
     phone_number = models.IntegerField(null=True,unique=True)
     image = models.ImageField(upload_to='images/',null=True)
     is_admin = models.BooleanField(default=False,null=True)  # role admin = True , normal user =False
@@ -21,7 +20,6 @@ class Categories(models.Model):
     product_Type_name = models.CharField(max_length=255)
     URL = models.CharField(max_length=25,null=True)
     product_Sub_type_name  = models.CharField(max_length=255)
-    is_featured_product = models.BooleanField(default=False,null=True)
     def __str__(self):
         return self.product_Type_name
 
@@ -32,6 +30,7 @@ class Products(models.Model):
     product_description = models.CharField(max_length=255)
     product_brand_name = models.CharField(max_length=255,null=True)
     product_price = models.IntegerField(null=True)
+    is_featured_product = models.BooleanField(default=False, null=True)
     product_image = models.ImageField(upload_to='product_main_images/')
 
     def __str__(self):

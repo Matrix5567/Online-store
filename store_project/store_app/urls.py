@@ -9,4 +9,5 @@ urlpatterns = [
     path('shop/<str:key>/', views.shop, name='shop'),
     path('single/<int:id>/', views.single, name='single'),
     path('cart/', views.cartpage, name='cartpage'),
+    path('signup/', views.signup, name='signup'),
 ]

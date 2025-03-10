@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="{% static 'css/templatemo.css' %}">
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
     <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
 
     <!-- Load fonts style after rendering the layout styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
@@ -30,11 +32,12 @@ https://templatemo.com/tm-559-zay-shop
 {% block content %} {% endblock %}
 {% include "bottom_banner.html"  %}
 {% include "footer.html"  %}
-
+{% include "login.html" %}
+{% include "signup.html" %}
     <script src="{% static 'scripts/jquery-1.11.0.min.js' %}"></script>
     <script src="{% static 'scripts/jquery-migrate-1.2.1.min.js' %}"></script>
     <script src="{% static 'scripts/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'scripts/templatemo.js' %}"></script>
-<!--    <script src="{% static 'scripts/cart.js' %}"></script>-->
+    <script src="{% static 'scripts/loginmodal.js' %}"></script>
 </body>
 </html>

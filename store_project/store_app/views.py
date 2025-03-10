@@ -1,6 +1,36 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from . common import  fetch_product_subimage, fetch_single_product, categories
+from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator
 # Create your views here.
+
+def signup(request):
+    name = request.POST.get('name')
+    email = request.POST.get('email')
+    phone = request.POST.get('phone')
+    image = request.FILES.get('image')
+    password = request.POST.get('password')
+    name_error = name_validator(name)
+    email_error = email_validator(email)
+    phone_error = phone_validator(phone)
+    image_error = image_validator(image)
+    password_error = password_validator(password)
+    errors = {}
+    if name_error:
+        errors['name']=name_error
+    if email_error:
+        errors['email']=email_error
+    if phone_error:
+        errors['phone'] = phone_error
+    if image_error:
+        errors['image'] = image_error
+    if password_error:
+        errors['password'] = password_error
+    if errors:
+        return JsonResponse({'success':False,"errors":errors})
+    return JsonResponse({'success':True})
+
+
 
 
 def home(request):

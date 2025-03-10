@@ -1,13 +1,11 @@
 [
   {
     "product_name" : "Shirt",
-    "product_description" : "Shirt for various occassions",
+    "product_description" : "Shirt for indoor outdoor activity",
     "product_brand_name" : "Peter England",
     "product_price" : "756",
     "product_image" : "product_main_images/d1.jpeg",
     "product_color" : "blue",
-    "product_Type_name" : "Clothing",
-    "product_Sub_type_name" : "Male",
     "is_featured_product" : "True",
     "subimage": [
       {

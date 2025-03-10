@@ -1,0 +1,40 @@
+{% load static %}
+
+<!-- Sign Up Modal -->
+<div id="signupModal" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeSignupModal()">&times;</span>
+        <h2 class="text-center">Sign Up</h2>
+        <form id="signupForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="signup-name">Name</label>
+                <input type="text" id="signup-name" name="name" class="form-control" placeholder="Enter your name" required>
+                <small id="nameError" style="color:red;"></small>
+            </div>
+            <div class="form-group">
+                <label for="signup-email">Email</label>
+                <input type="email" id="signup-email" name="email" class="form-control" placeholder="Enter your email" required>
+                <small id="emailError" style="color:red;"></small>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                <small id="passwordError" style="color:red;"></small>
+            </div>
+            <div class="form-group">
+                <label for="signup-phone">Phone Number</label>
+                <input type="number" id="signup-phone" name="phone" class="form-control" placeholder="Enter your phone number" required>
+                <small id="phoneError" style="color:red;"></small>
+            </div>
+            <div class="form-group">
+                <small id="imageError" style="color:red;"></small>
+                <label for="signup-image">Profile Picture</label>
+                <input type="file" name="image" id="signup-image" class="form-control" accept="image/*" required>
+<!--                <img id="image-preview" src="#" alt="Image Preview" style="display: none; margin-top: 10px; max-width: 100px; border-radius: 50%;">-->
+            </div>
+            <button type="submit" class="btn btn-success w-100">Sign Up</button>
+        </form>
+        <p class="text-center mt-3">Already have an account? <a href="#">Login</a></p>
+    </div>
+</div>
