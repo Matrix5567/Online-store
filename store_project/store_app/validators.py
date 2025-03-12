@@ -1,5 +1,6 @@
 import re
 import imghdr
+from .models import CustomUser
 
 def name_validator(name):
     if not name:
@@ -14,6 +15,8 @@ def name_validator(name):
 def email_validator(email):
     if not email:
         return "Email cannot be emtpty"
+    elif CustomUser.objects.filter(email=email).exists():
+        return "This email already exists"
     else:
         if not re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-,]+$",email):
             return "Invalid Email"
@@ -23,6 +26,8 @@ def email_validator(email):
 def phone_validator(phone):
     if not phone:
         return "Phone number cannot be empty"
+    elif CustomUser.objects.filter(phone_number=phone).exists():
+        return "Phone number already exists"
     else:
         if not re.match(r"^\d{10,12}$",phone):
             return "Phone number must contain digits and 10-12 characters long"
