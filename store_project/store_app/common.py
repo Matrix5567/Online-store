@@ -1,5 +1,5 @@
-from . models import Products, ProductsSubimage, Categories
-from django.shortcuts import get_object_or_404
+from . models import Products, ProductsSubimage, Categories, CustomUser
+
 
 
 
@@ -23,3 +23,7 @@ def categories(URL):
         prod_cat = Categories.objects.all()
     return prod_cat
 
+def register(name,phone,email,image,password):
+    CustomUser.objects.create_user(full_name=name,phone_number=phone,email=email,image=image,
+                                   password=password,is_admin=False,username=name)
+    return True

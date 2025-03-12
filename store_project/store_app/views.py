@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render
-from . common import  fetch_product_subimage, fetch_single_product, categories
+from . common import  fetch_product_subimage, fetch_single_product, categories, register
 from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator
 # Create your views here.
 
@@ -28,7 +28,9 @@ def signup(request):
         errors['password'] = password_error
     if errors:
         return JsonResponse({'success':False,"errors":errors})
-    return JsonResponse({'success':True})
+    register_success = register(name,phone,email,image,password)
+    if register_success:
+        return JsonResponse({'success':True})
 
 
 
