@@ -42,10 +42,9 @@ $(document).ready(function(){
             processData: false,
             contentType: false,
             success: function(response) {
-            console.log(response.errors)
                 if (response.success) {
                     alert("Sign-up successful!");
-                    $("#signupModal").modal("hide"); // Hide modal after successful sign-up
+                    document.getElementById("signupModal").style.display = "none"; // Hide modal after successful sign-up
                 } else {
                     let errors = response.errors;
                     if (errors.email) {
@@ -67,6 +66,46 @@ $(document).ready(function(){
             },
             error: function() {
                 $("#signupError").html("Something went wrong. Please try again.");
+            }
+        });
+    });
+});
+
+
+
+
+
+
+
+$(document).ready(function(){
+    $("#loginForm").submit(function(e){
+        e.preventDefault(); // Prevent default form submission
+
+        var formData = new FormData(this); // Get form data, including files
+
+        $.ajax({
+            type: "POST",
+            url: 'http://127.0.0.1:8000/login/', // Django signup URL
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+            console.log(response.errors)
+                if (response.success) {
+                    alert("Login successful!");
+                    document.getElementById("loginModal").style.display = "none"; // Hide modal after successful sign-up
+                } else {
+                    let errors = response.errors;
+                    if (errors.email) {
+                    $("#loginemailError").html(errors.email);
+                    }
+                    if(errors.name){
+                    $("#passwordemailError").html(errors.password);
+                    }
+                }
+            },
+            error: function() {
+                $("#loginemailError").html("Something went wrong. Please try again.");
             }
         });
     });

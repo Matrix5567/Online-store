@@ -33,7 +33,11 @@ def signup(request):
         return JsonResponse({'success':True})
 
 
-
+def login(request):
+    login_email = request.POST.get('email')
+    login_password = request.POST.get('password')
+    print(login_email,login_password)
+    return JsonResponse ({'success':True})
 
 def home(request):
     return render(request,'index.html',{'product':categories(URL=False)})

@@ -10,4 +10,5 @@ urlpatterns = [
     path('single/<int:id>/', views.single, name='single'),
     path('cart/', views.cartpage, name='cartpage'),
     path('signup/', views.signup, name='signup'),
+    path('login/', views.login, name='login'),
 ]
