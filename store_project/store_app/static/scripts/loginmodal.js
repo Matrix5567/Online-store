@@ -1,3 +1,22 @@
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/onload/')  // Call the backend API
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.user.image) {
+                document.getElementById('std_profile_pic').src=data.user.image;    // onload function for user details
+                document.getElementById("logout").style.display = "block";
+            }
+        })
+        .catch(error => console.error('not logged in',error));
+});
+
+
+
+
+
+
+
+
 function openModal() {
         document.getElementById("loginModal").style.display = "flex";
     }
@@ -90,11 +109,13 @@ $(document).ready(function(){
             processData: false,
             contentType: false,
             success: function(response) {
-            console.log(response.errors)
-                if (response.success) {
-                    alert("Login successful!");
-                    document.getElementById("loginModal").style.display = "none"; // Hide modal after successful sign-up
+                if (response.success && response.user.image) {
                     document.getElementById("logout").style.display = "block";
+                    document.getElementById("loginModal").style.display = "none"; // Hide modal after successful sign-up
+                    document.getElementById("std_profile_pic").src= response.user.image;
+
+
+
                 } else {
                     let errors = response.errors;
                     if (errors.email) {

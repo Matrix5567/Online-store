@@ -1,11 +1,24 @@
+import json
+
 from django.contrib.auth import logout, authenticate, login
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from . common import  fetch_product_subimage, fetch_single_product, categories, register
+from . common import  fetch_product_subimage, fetch_single_product, categories, register, json_serializable
 from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator\
     , login_password_validator, login_email_validator
 
 # Create your views here.
+
+
+
+
+def onload(request):
+    if request.user.is_authenticated:
+        user_data = json_serializable(request.user, request=request)
+        return JsonResponse({'success': True, 'user': user_data})
+    else:
+        return JsonResponse({'success': False})
+
 
 def signup(request):
     name = request.POST.get('name')
@@ -51,7 +64,8 @@ def user_login(request):
     user = authenticate(request, email=login_email, password=login_password)
     if user is not None:
         login(request,user)
-        return JsonResponse ({'success':True})
+        user_data = json_serializable(user,request=request)
+        return JsonResponse ({'success':True,'user':user_data})
 
 def user_logout(request):
     logout(request)
