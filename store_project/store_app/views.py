@@ -1,7 +1,10 @@
+from django.contrib.auth import logout, authenticate, login
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from . common import  fetch_product_subimage, fetch_single_product, categories, register
-from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator
+from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator\
+    , login_password_validator, login_email_validator
+
 # Create your views here.
 
 def signup(request):
@@ -33,11 +36,27 @@ def signup(request):
         return JsonResponse({'success':True})
 
 
-def login(request):
+def user_login(request):
     login_email = request.POST.get('email')
     login_password = request.POST.get('password')
-    print(login_email,login_password)
-    return JsonResponse ({'success':True})
+    login_email_error = login_email_validator(login_email)
+    login_password_error = login_password_validator(login_password,login_email)
+    errors={}
+    if login_email_error:
+        errors['email']=login_email_error
+    if login_password_error:
+        errors['password'] = login_password_error
+    if errors:
+        return JsonResponse({'success': False, "errors": errors})
+    user = authenticate(request, email=login_email, password=login_password)
+    if user is not None:
+        login(request,user)
+        return JsonResponse ({'success':True})
+
+def user_logout(request):
+    logout(request)
+    return redirect(home)
+
 
 def home(request):
     return render(request,'index.html',{'product':categories(URL=False)})

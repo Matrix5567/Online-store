@@ -1,3 +1,5 @@
+
+
 from . models import Products, ProductsSubimage, Categories, CustomUser
 
 
@@ -27,3 +29,4 @@ def register(name,phone,email,image,password):
     CustomUser.objects.create_user(full_name=name,phone_number=phone,email=email,image=image,
                                    password=password,is_admin=False,username=email)
     return True
+

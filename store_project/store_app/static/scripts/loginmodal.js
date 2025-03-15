@@ -94,12 +94,13 @@ $(document).ready(function(){
                 if (response.success) {
                     alert("Login successful!");
                     document.getElementById("loginModal").style.display = "none"; // Hide modal after successful sign-up
+                    document.getElementById("logout").style.display = "block";
                 } else {
                     let errors = response.errors;
                     if (errors.email) {
                     $("#loginemailError").html(errors.email);
                     }
-                    if(errors.name){
+                    if(errors.password){
                     $("#passwordemailError").html(errors.password);
                     }
                 }
