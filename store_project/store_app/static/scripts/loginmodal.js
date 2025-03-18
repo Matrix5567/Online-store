@@ -12,11 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-
-
-
-
 function openModal() {
         document.getElementById("loginModal").style.display = "flex";
     }
@@ -111,7 +106,7 @@ $(document).ready(function(){
             success: function(response) {
                 if (response.success && response.user.image) {
                     document.getElementById("logout").style.display = "block";
-                    document.getElementById("loginModal").style.display = "none"; // Hide modal after successful sign-up
+                    document.getElementById("loginModal").style.display = "none"; // Hide modal after successful login
                     document.getElementById("std_profile_pic").src= response.user.image;
 
 

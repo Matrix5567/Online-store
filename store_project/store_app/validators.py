@@ -66,21 +66,25 @@ def login_email_validator(email):
     if not email:
         return "Email cannot be empty"
     elif not CustomUser.objects.filter(email=email).exists():
-        return "Email not registered"
+        return "Invalid email"
     elif not re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-,]+$",email):
         return "Invalid Email Format"
     else:
         return None
 
 def login_password_validator(password,email):
-    get_password = CustomUser.objects.get(email=email)
+    get_password = CustomUser.objects.filter(email=email)
+    if not get_password:
+        return None
     if not password:
         return "Password cannot be empty"
     else:
         if not re.match(r"^(?=.*[!@#$%^&*()_+{}:;\"'<>,.?/~`-]).{5,}$", password):
             return "Password must be atleast 5 long and must have one special characters"
         else:
-            if not check_password(password,get_password.password):
-                return "Invalid password"
-            else:
-                return None
+            for pass_word in get_password:
+                fetched_password=pass_word.password
+                if not check_password(password,fetched_password):
+                    return "Invalid password"
+                else:
+                    return None

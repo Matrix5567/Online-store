@@ -1,4 +1,5 @@
 from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from . common import  fetch_product_subimage, fetch_single_product, categories, register, json_serializable
@@ -95,5 +96,12 @@ def single(request,id):
     return render(request,'shop-single.html',{'sub_images':fetch_product_subimage(id),
                                               'product':fetch_single_product(id=id,product_type=False)})
 
-def cartpage(request):
+def cartpage(request):  #check logged in or not to display cart
+    if request.user.is_authenticated:
+        return JsonResponse({'success':True})
+    else:
+        return JsonResponse({'success':False})
+
+@login_required
+def cartview(request):
     return render(request,'cart.html')

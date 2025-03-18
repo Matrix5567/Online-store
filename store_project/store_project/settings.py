@@ -70,6 +70,9 @@ TEMPLATES = [
 
 MEDIA_URL = '/media/'
 
+
+LOGIN_URL = '/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
 
 WSGI_APPLICATION = 'store_project.wsgi.application'
