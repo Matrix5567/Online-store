@@ -1,5 +1,3 @@
-import json
-
 from django.contrib.auth import logout, authenticate, login
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -73,7 +71,8 @@ def user_logout(request):
 
 
 def home(request):
-    return render(request,'index.html',{'product':categories(URL=False)})
+    return render(request,'index.html',{'product':categories(URL=False),
+                                        'featured':fetch_single_product(id=False,product_type=False)})
 
 
 def contact(request):
