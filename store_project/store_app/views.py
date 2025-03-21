@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from . common import  fetch_product_subimage, fetch_single_product, categories, register, json_serializable
-from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator\
-    , login_password_validator, login_email_validator
+from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator
+
 
 # Create your views here.
 
@@ -51,20 +51,13 @@ def signup(request):
 def user_login(request):
     login_email = request.POST.get('email')
     login_password = request.POST.get('password')
-    login_email_error = login_email_validator(login_email)
-    login_password_error = login_password_validator(login_password,login_email)
-    errors={}
-    if login_email_error:
-        errors['email']=login_email_error
-    if login_password_error:
-        errors['password'] = login_password_error
-    if errors:
-        return JsonResponse({'success': False, "errors": errors})
     user = authenticate(request, email=login_email, password=login_password)
     if user is not None:
         login(request,user)
         user_data = json_serializable(user,request=request)
         return JsonResponse ({'success':True,'user':user_data})
+    else:
+        return JsonResponse({'success': False, 'errors': 'Invalid login credentials'})
 
 def user_logout(request):
     logout(request)
@@ -96,12 +89,6 @@ def single(request,id):
     return render(request,'shop-single.html',{'sub_images':fetch_product_subimage(id),
                                               'product':fetch_single_product(id=id,product_type=False)})
 
-def cartpage(request):  #check logged in or not to display cart
-    if request.user.is_authenticated:
-        return JsonResponse({'success':True})
-    else:
-        return JsonResponse({'success':False})
+def cartpage(request):
+   return render(request,'cart.html')
 
-@login_required
-def cartview(request):
-    return render(request,'cart.html')

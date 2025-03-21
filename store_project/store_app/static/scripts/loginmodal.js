@@ -108,16 +108,10 @@ $(document).ready(function(){
                     document.getElementById("logout").style.display = "block";
                     document.getElementById("loginModal").style.display = "none"; // Hide modal after successful login
                     document.getElementById("std_profile_pic").src= response.user.image;
-
-
-
                 } else {
                     let errors = response.errors;
-                    if (errors.email) {
-                    $("#loginemailError").html(errors.email);
-                    }
-                    if(errors.password){
-                    $("#passwordemailError").html(errors.password);
+                    if (errors) {
+                    $("#loginemailError").html(errors);
                     }
                 }
             },

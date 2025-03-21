@@ -1,4 +1,4 @@
-
+{% load static %}
     <!-- Start Top Nav -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
         <div class="container text-light">
@@ -66,14 +66,14 @@
                         <i class="fa fa-fw fa-search text-dark mr-2"></i>
                     </a>
 
-                    <a class="nav-icon position-relative text-decoration-none" onclick="cart()">
+                    <a class="nav-icon position-relative text-decoration-none" href="{% url 'cartpage' %}">
                         <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
                         <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span>
                     </a>
 
                     <a class="nav-icon position-relative text-decoration-none">
 
-                        <img id="std_profile_pic"  onclick="openModal()" style="width:30px;height:30px;border-radius:50%;object-fit:cover;" src="static/icons/default.png" />
+                        <img id="std_profile_pic"  onclick="openModal()" style="width:30px;height:30px;border-radius:50%;object-fit:cover;" src="{% static 'icons/default.png' %}" />
 
                         <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"></span>
                     </a>
@@ -82,3 +82,4 @@
 
         </div>
     </nav>
+
