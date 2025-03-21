@@ -10,6 +10,7 @@
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-body">
+                        {% if cart_items %}
                         <table class="table">
                             <thead class="table-light">
                                 <tr>
@@ -23,22 +24,24 @@
                             </thead>
                             <tbody>
                                 <!-- Sample Product Row -->
+                                {% for items in cart_items %}
                                 <tr>
                                     <td>
-                                        <img src="{% static 'images/product1.jpg' %}" alt="Product" width="70">
+                                        <img src="{{ items.products.product_image.url }}" alt="Product" width="70">
                                     </td>
-                                    <td>Sports Bra</td>
-                                    <td>₹1200</td>
+                                    <td>{{items.product.product_name}}</td>
+                                    <td>{{items.product.product_price}}</td>
                                     <td>
                                         <button class="btn btn-success btn-sm">-</button>
-                                        <span class="mx-2">1</span>
+                                        <span class="mx-2">{{items.quantity}}</span>
                                         <button class="btn btn-success btn-sm">+</button>
                                     </td>
-                                    <td>₹1200</td>
+                                    <td>{{subtotal}}</td>
                                     <td>
                                         <button class="btn btn-danger btn-sm">X</button>
                                     </td>
                                 </tr>
+                                {% endfor %}
                                 <!-- Add more rows for other products -->
                             </tbody>
                         </table>
@@ -50,11 +53,14 @@
             <div class="col-lg-4">
                 <div class="card p-3">
                     <h4>Cart Summary</h4>
-                    <p><strong>Total:</strong> ₹1200</p>
+                    <p><strong>Total:</strong>{{total}}</p>
                     <a href="#" class="btn btn-success w-100">Proceed to Checkout</a>
                 </div>
             </div>
         </div>
+        {% else %}
+        <p>No items</p>
+        {% endif %}
     </div>
 </section>
 

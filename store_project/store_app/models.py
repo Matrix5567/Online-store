@@ -40,3 +40,10 @@ class ProductsSubimage(models.Model):
     product = models.ForeignKey(Products,on_delete=models.CASCADE,related_name='subimages')
     product_subimage = models.ImageField(upload_to='product_sub_images/')
 
+class Cart(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    product = models.ForeignKey(Products,on_delete=models.CASCADE,related_name='product')
+    quantity = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.user}"

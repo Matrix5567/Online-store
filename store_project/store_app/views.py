@@ -2,7 +2,8 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from . common import  fetch_product_subimage, fetch_single_product, categories, register, json_serializable
+from . common import  fetch_product_subimage, fetch_single_product, categories, register, json_serializable\
+    , get_cart
 from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator
 
 
@@ -90,5 +91,5 @@ def single(request,id):
                                               'product':fetch_single_product(id=id,product_type=False)})
 
 def cartpage(request):
-   return render(request,'cart.html')
+   return render(request,'cart.html',{'cart_items':get_cart()})
 

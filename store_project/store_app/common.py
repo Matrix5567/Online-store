@@ -1,6 +1,6 @@
 from django.forms.models import model_to_dict
 from datetime import datetime
-from . models import Products, ProductsSubimage, Categories, CustomUser
+from . models import Products, ProductsSubimage, Categories, CustomUser, Cart
 
 
 
@@ -43,3 +43,6 @@ def json_serializable(user,request):
         if 'image' in user_data and user.image:
             user_data['image'] = request.build_absolute_uri(user.image.url)
     return user_data
+
+def get_cart():
+    return Cart.objects.all()
