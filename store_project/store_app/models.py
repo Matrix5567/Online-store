@@ -32,6 +32,7 @@ class Products(models.Model):
     product_price = models.IntegerField(null=True)
     is_featured_product = models.BooleanField(default=False, null=True)
     product_image = models.ImageField(upload_to='product_main_images/')
+    product_quantity = models.PositiveIntegerField(null=True,default=1)
 
     def __str__(self):
         return self.product_name

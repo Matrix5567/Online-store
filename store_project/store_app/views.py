@@ -91,5 +91,9 @@ def single(request,id):
                                               'product':fetch_single_product(id=id,product_type=False)})
 
 def cartpage(request):
-   return render(request,'cart.html',{'cart_items':get_cart()})
+    if request.method == 'POST':
+        print(">>??????",request.POST)
+        return JsonResponse({'success':True})
+    else:
+        return render(request,'cart.html',{'cart_items':get_cart()})
 
