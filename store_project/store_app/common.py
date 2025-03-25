@@ -1,5 +1,8 @@
 from django.forms.models import model_to_dict
 from datetime import datetime
+
+from django.http import JsonResponse
+
 from . models import Products, ProductsSubimage, Categories, CustomUser, Cart
 
 
@@ -44,5 +47,13 @@ def json_serializable(user,request):
             user_data['image'] = request.build_absolute_uri(user.image.url)
     return user_data
 
-def get_cart():
-    return Cart.objects.all()
+def get_cart(inc,dec,submitt):
+    if inc:
+        return True
+    elif dec:
+        return True
+    elif submitt:
+        print(">>???????>>",submitt)
+        return True
+    else:
+        return Cart.objects.all()

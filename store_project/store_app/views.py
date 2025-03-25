@@ -92,8 +92,15 @@ def single(request,id):
 
 def cartpage(request):
     if request.method == 'POST':
-        print(">>??????",request.POST)
-        return JsonResponse({'success':True})
+        if request.POST.get('action') == 'inc':
+            get_cart(inc=request.POST.get('action'),dec=False,submitt=False)
+            return JsonResponse({'success': True})
+        elif request.POST.get('action') == 'dec':
+            get_cart(inc=False, dec=request.POST.get('action'), submitt=False)
+            return JsonResponse({'success': True})
+        else:
+            get_cart(inc=False, dec=False, submitt=request.POST)
+            return JsonResponse({'success':True})
     else:
-        return render(request,'cart.html',{'cart_items':get_cart()})
+        return render(request,'cart.html',{'cart_items':get_cart(inc=False,dec=False,submitt=False)})
 

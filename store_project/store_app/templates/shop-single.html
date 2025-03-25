@@ -80,6 +80,7 @@
                 <div class="col-lg-7 mt-5">
                     <form id="cartsubmission">
                         {% csrf_token %}
+                        <input type="hidden" name="product_image" value="{{product.product_image}}" >
                     <div class="card">
                         <div class="card-body">
 
