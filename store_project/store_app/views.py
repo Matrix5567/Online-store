@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from . common import  fetch_product_subimage, fetch_single_product, categories, register, json_serializable\
-    , get_cart, increment_decrement
+    , get_cart, increment_decrement, cart_total_price
 from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator
 
 
@@ -95,7 +95,8 @@ def cartpage(request):
         get_cart(submitt=request.POST,user=request.user.is_authenticated,request=request)
         return JsonResponse({'success':True})
     else:
-        return render(request,'cart.html',{'cart_items':get_cart(submitt=False,user=request.user.is_authenticated,request=request)})
+        return render(request,'cart.html',{'cart_items':get_cart(submitt=False,user=request.user.is_authenticated,request=request),
+                                           'total':cart_total_price(request.session.get('cart', {}))})
 
 def quantity(request,action,id):
     return increment_decrement(action=action,id=id,request=request)

@@ -30,5 +30,6 @@ function quantity(action,id){
    {
    document.getElementById("var-value-"+id).innerHTML = data.quantity;
    document.getElementById("sub-value-"+id).innerHTML = data.sub_total;
+   document.getElementById("total").innerHTML = data.total;
    });
    }
