@@ -78,24 +78,27 @@ def cart_total_price(cart):
     return total_price
 
 def increment_decrement(action,id,request):
-    cart = request.session.get('cart', {})
-    if action == 'inc':
-        cart[str(id)]['product_quantity']+=1
-        cart[str(id)]['prod_total_price'] = cart[str(id)]['product_quantity'] * cart[str(id)]['product_unit_price']
-        request.session['cart'] = cart
-        request.session.modified = True
-        return JsonResponse({'quantity':  cart[str(id)]['product_quantity'],
-                             'sub_total':cart[str(id)]['prod_total_price'],'total':cart_total_price(cart)})
-    elif action == 'dec':
-        if cart[str(id)]['product_quantity'] >1:
-            cart[str(id)]['product_quantity'] -= 1
+    if not request.user.is_authenticated:
+        cart = request.session.get('cart', {})
+        if action == 'inc':
+            cart[str(id)]['product_quantity']+=1
             cart[str(id)]['prod_total_price'] = cart[str(id)]['product_quantity'] * cart[str(id)]['product_unit_price']
             request.session['cart'] = cart
             request.session.modified = True
-            return JsonResponse({'quantity': cart[str(id)]['product_quantity'],
+            return JsonResponse({'quantity':  cart[str(id)]['product_quantity'],
+                             'sub_total':cart[str(id)]['prod_total_price'],'total':cart_total_price(cart)})
+        elif action == 'dec':
+            if cart[str(id)]['product_quantity'] >1:
+                cart[str(id)]['product_quantity'] -= 1
+                cart[str(id)]['prod_total_price'] = cart[str(id)]['product_quantity'] * cart[str(id)]['product_unit_price']
+                request.session['cart'] = cart
+                request.session.modified = True
+                return JsonResponse({'quantity': cart[str(id)]['product_quantity'],
+                                 'sub_total':cart[str(id)]['prod_total_price'],'total':cart_total_price(cart)})
+            else:
+                return JsonResponse({'quantity': cart[str(id)]['product_quantity'],
                                  'sub_total':cart[str(id)]['prod_total_price'],'total':cart_total_price(cart)})
         else:
-            return JsonResponse({'quantity': cart[str(id)]['product_quantity'],
-                                 'sub_total':cart[str(id)]['prod_total_price'],'total':cart_total_price(cart)})
+            print("unknown error occured at quantity")
     else:
-        return "Unknown error occured at qty"
+        print("database increment/decrement operations")
