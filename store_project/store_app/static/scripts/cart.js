@@ -29,5 +29,6 @@ function quantity(action,id){
     $.get("/quantity/"+action+"/"+id+"/", function(data, status)
    {
    document.getElementById("var-value-"+id).innerHTML = data.quantity;
+   document.getElementById("sub-value-"+id).innerHTML = data.sub_total;
    });
    }

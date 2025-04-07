@@ -76,15 +76,17 @@ def increment_decrement(action,id,request):
     cart = request.session.get('cart', {})
     if action == 'inc':
         cart[str(id)]['product_quantity']+=1
+        cart[str(id)]['prod_total_price'] = cart[str(id)]['product_quantity'] * cart[str(id)]['product_unit_price']
         request.session['cart'] = cart
         request.session.modified = True
-        return JsonResponse({'quantity':  cart[str(id)]['product_quantity']})
+        return JsonResponse({'quantity':  cart[str(id)]['product_quantity'],'sub_total':cart[str(id)]['prod_total_price']})
     elif action == 'dec':
         if cart[str(id)]['product_quantity'] >1:
             cart[str(id)]['product_quantity'] -= 1
+            cart[str(id)]['prod_total_price'] = cart[str(id)]['product_quantity'] * cart[str(id)]['product_unit_price']
             request.session['cart'] = cart
             request.session.modified = True
-            return JsonResponse({'quantity': cart[str(id)]['product_quantity']})
+            return JsonResponse({'quantity': cart[str(id)]['product_quantity'],'sub_total':cart[str(id)]['prod_total_price']})
         else:
             return JsonResponse({'quantity': cart[str(id)]['product_quantity']})
     else:
