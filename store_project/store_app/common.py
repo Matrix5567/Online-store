@@ -47,13 +47,45 @@ def json_serializable(user,request):
             user_data['image'] = request.build_absolute_uri(user.image.url)
     return user_data
 
-def get_cart(inc,dec,submitt):
-    if inc:
-        return True
-    elif dec:
-        return True
-    elif submitt:
-        print(">>???????>>",submitt)
-        return True
+def get_cart(submitt,user,request):
+    if submitt:
+        if user:
+            print("save to database",submitt)
+        else:
+            cart = request.session.get('cart',{})
+            product_id = str(submitt['product_id'])
+            cart[product_id] = {
+                'prod_total_price': int(submitt['product_total_price']), 'prod_size': submitt['product-size']
+                , 'product_quantity':int(submitt['product_quantity']), 'product_name': submitt['product_name'],
+                'product_brand_name': submitt['product_brand_name'],
+                'product_description': submitt['product_product_description'],
+                'product_color': submitt['product_product_color'], 'product_image': submitt['product_image'],
+                'product_unit_price': int(submitt['product_unit_price']), 'product_id': submitt['product_id']
+
+            }
+            request.session['cart']=cart
+            request.session.modified=True
     else:
-        return Cart.objects.all()
+        if user:
+            return Cart.objects.all()
+        else:
+            cart = request.session.get('cart',{})
+            return cart
+
+def increment_decrement(action,id,request):
+    cart = request.session.get('cart', {})
+    if action == 'inc':
+        cart[str(id)]['product_quantity']+=1
+        request.session['cart'] = cart
+        request.session.modified = True
+        return JsonResponse({'quantity':  cart[str(id)]['product_quantity']})
+    elif action == 'dec':
+        if cart[str(id)]['product_quantity'] >1:
+            cart[str(id)]['product_quantity'] -= 1
+            request.session['cart'] = cart
+            request.session.modified = True
+            return JsonResponse({'quantity': cart[str(id)]['product_quantity']})
+        else:
+            return JsonResponse({'quantity': cart[str(id)]['product_quantity']})
+    else:
+        return "Unknown error occured at qty"

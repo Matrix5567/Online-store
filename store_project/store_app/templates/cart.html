@@ -24,23 +24,26 @@
                             </thead>
                             <tbody>
                                 <!-- Sample Product Row -->
-                                {% for items in cart_items %}
+                                {% for product_id, item in cart_items.items %}
+
                                 <tr>
+
                                     <td>
-                                        <img src="{{ items.product.product_image.url }}" alt="Product" width="70">
+                                        <img src="{{ item.product_image }}" alt="Product" width="70">
                                     </td>
-                                    <td>{{items.product.product_name}}</td>
-                                    <td>{{items.product.product_price}}</td>
+                                    <td>{{item.product_name}}</td>
+                                    <td>{{item.product_unit_price}}</td>
                                     <td>
-                                        <button class="btn btn-success btn-sm">-</button>
-                                        <span class="mx-2">{{items.quantity}}</span>
-                                        <button class="btn btn-success btn-sm">+</button>
+                                        <button id="{{item.product_id}}" onclick="quantity('dec',this.id)" class="btn btn-success btn-sm">-</button>
+                                        <span  class="mx-2" id="var-value-{{item.product_id}}">{{item.product_quantity}}</span>
+                                        <button id="{{item.product_id}}" onclick="quantity('inc',this.id)" class="btn btn-success btn-sm">+</button>
                                     </td>
-                                    <td>{{subtotal}}</td>
+                                    <td>{{item.prod_total_price}}</td>
                                     <td>
                                         <button class="btn btn-danger btn-sm">X</button>
                                     </td>
                                 </tr>
+
                                 {% endfor %}
                                 <!-- Add more rows for other products -->
                             </tbody>

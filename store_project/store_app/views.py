@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from . common import  fetch_product_subimage, fetch_single_product, categories, register, json_serializable\
-    , get_cart
+    , get_cart, increment_decrement
 from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator
 
 
@@ -92,15 +92,10 @@ def single(request,id):
 
 def cartpage(request):
     if request.method == 'POST':
-        if request.POST.get('action') == 'inc':
-            get_cart(inc=request.POST.get('action'),dec=False,submitt=False)
-            return JsonResponse({'success': True})
-        elif request.POST.get('action') == 'dec':
-            get_cart(inc=False, dec=request.POST.get('action'), submitt=False)
-            return JsonResponse({'success': True})
-        else:
-            get_cart(inc=False, dec=False, submitt=request.POST)
-            return JsonResponse({'success':True})
+        get_cart(submitt=request.POST,user=request.user.is_authenticated,request=request)
+        return JsonResponse({'success':True})
     else:
-        return render(request,'cart.html',{'cart_items':get_cart(inc=False,dec=False,submitt=False)})
+        return render(request,'cart.html',{'cart_items':get_cart(submitt=False,user=request.user.is_authenticated,request=request)})
 
+def quantity(request,action,id):
+    return increment_decrement(action=action,id=id,request=request)

@@ -29,7 +29,7 @@ class Products(models.Model):
     product_color = models.CharField(max_length=50,null=True)
     product_description = models.CharField(max_length=255)
     product_brand_name = models.CharField(max_length=255,null=True)
-    product_price = models.IntegerField(null=True)
+    unit_product_price = models.IntegerField(null=True)
     is_featured_product = models.BooleanField(default=False, null=True)
     product_image = models.ImageField(upload_to='product_main_images/')
     product_quantity = models.PositiveIntegerField(null=True,default=1)
@@ -45,6 +45,7 @@ class Cart(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     product = models.ForeignKey(Products,on_delete=models.CASCADE,related_name='product')
     quantity = models.PositiveIntegerField(default=1)
+    product_total_price = models.IntegerField(null=True)
 
     def __str__(self):
         return f"{self.user}"

@@ -13,4 +13,5 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
     path('onload/', views.onload, name='onload'),
+    path('quantity/<str:action>/<int:id>/',views.quantity,name='quantity'),
 ]
