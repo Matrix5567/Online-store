@@ -71,11 +71,21 @@ def get_cart(submitt,user,request):
         else:
             cart = request.session.get('cart',{})
             return cart
-def cart_total_price(cart):
+
+def cart_count(request):
+    if not request.user.is_authenticated:
+        cart = request.session.get('cart', {})
+        return len(cart)
+    else:
+        print("count from database")
+
+
+def cart_total_price(cart,request):
     total_price = 0
-    for item in cart.values():
-        total_price += int(item['prod_total_price'])
-    return total_price
+    if not request.user.is_authenticated:
+        for item in cart.values():
+            total_price += int(item['prod_total_price'])
+        return total_price
 
 def increment_decrement(action,id,request):
     if not request.user.is_authenticated:
@@ -86,7 +96,8 @@ def increment_decrement(action,id,request):
             request.session['cart'] = cart
             request.session.modified = True
             return JsonResponse({'quantity':  cart[str(id)]['product_quantity'],
-                             'sub_total':cart[str(id)]['prod_total_price'],'total':cart_total_price(cart)})
+                             'sub_total':cart[str(id)]['prod_total_price'],'total':cart_total_price(cart,request),
+                                 'count':cart_count(request)})
         elif action == 'dec':
             if cart[str(id)]['product_quantity'] >1:
                 cart[str(id)]['product_quantity'] -= 1
@@ -94,10 +105,12 @@ def increment_decrement(action,id,request):
                 request.session['cart'] = cart
                 request.session.modified = True
                 return JsonResponse({'quantity': cart[str(id)]['product_quantity'],
-                                 'sub_total':cart[str(id)]['prod_total_price'],'total':cart_total_price(cart)})
+                                 'sub_total':cart[str(id)]['prod_total_price'],'total':cart_total_price(cart,request),
+                                     'count':cart_count(request)})
             else:
                 return JsonResponse({'quantity': cart[str(id)]['product_quantity'],
-                                 'sub_total':cart[str(id)]['prod_total_price'],'total':cart_total_price(cart)})
+                                 'sub_total':cart[str(id)]['prod_total_price'],'total':cart_total_price(cart,request),
+                                     'count':cart_count(request)})
         else:
             print("unknown error occured at quantity")
     else:

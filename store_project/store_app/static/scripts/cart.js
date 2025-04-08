@@ -13,6 +13,7 @@ $(document).ready(function(){
             success: function(response) {
                 if (response.success) {
                     alert("item added to cart")
+                    document.getElementById("count_banner").innerHTML = response.count;
                 } else {
                    console.log("error from backend")
                 }
@@ -31,5 +32,6 @@ function quantity(action,id){
    document.getElementById("var-value-"+id).innerHTML = data.quantity;
    document.getElementById("sub-value-"+id).innerHTML = data.sub_total;
    document.getElementById("total").innerHTML = data.total;
+   document.getElementById("count_banner").innerHTML = data.count;
    });
    }

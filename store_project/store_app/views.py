@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from . common import  fetch_product_subimage, fetch_single_product, categories, register, json_serializable\
-    , get_cart, increment_decrement, cart_total_price
+    , get_cart, increment_decrement, cart_total_price, cart_count
 from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator
 
 
@@ -17,7 +17,7 @@ def onload(request):
         user_data = json_serializable(request.user, request=request)
         return JsonResponse({'success': True, 'user': user_data})
     else:
-        return JsonResponse({'success': False})
+        return JsonResponse({'success': False,'count':cart_count(request)})
 
 
 def signup(request):
@@ -93,10 +93,10 @@ def single(request,id):
 def cartpage(request):
     if request.method == 'POST':
         get_cart(submitt=request.POST,user=request.user.is_authenticated,request=request)
-        return JsonResponse({'success':True})
+        return JsonResponse({'success':True,'count':cart_count(request)})
     else:
         return render(request,'cart.html',{'cart_items':get_cart(submitt=False,user=request.user.is_authenticated,request=request),
-                                           'total':cart_total_price(request.session.get('cart', {}))})
+                                           'total':cart_total_price(request.session.get('cart', {}),request)})
 
 def quantity(request,action,id):
     return increment_decrement(action=action,id=id,request=request)
