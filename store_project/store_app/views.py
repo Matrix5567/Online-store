@@ -15,7 +15,7 @@ from . validators import name_validator, email_validator, phone_validator, image
 def onload(request):
     if request.user.is_authenticated:
         user_data = json_serializable(request.user, request=request)
-        return JsonResponse({'success': True, 'user': user_data})
+        return JsonResponse({'success': True, 'user': user_data,'count':cart_count(request)})
     else:
         return JsonResponse({'success': False,'count':cart_count(request)})
 

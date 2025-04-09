@@ -82,10 +82,9 @@ def cart_count(request):
 
 def cart_total_price(cart,request):
     total_price = 0
-    if not request.user.is_authenticated:
-        for item in cart.values():
-            total_price += int(item['prod_total_price'])
-        return total_price
+    for item in cart.values():
+        total_price += int(item['prod_total_price'])
+    return total_price
 
 def increment_decrement(action,id,request):
     if not request.user.is_authenticated:
