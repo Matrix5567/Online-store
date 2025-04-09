@@ -31,7 +31,7 @@ def phone_validator(phone):
         return "Phone number already exists"
     else:
         if not re.match(r"^\d{10,12}$",phone):
-            return "Phone number must contain digits and 10-12 characters long"
+            return "Invalid phone number"
         else:
             return None
 

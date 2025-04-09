@@ -29,9 +29,30 @@ $(document).ready(function(){
 function quantity(action,id){
     $.get("/quantity/"+action+"/"+id+"/", function(data, status)
    {
+   if (data.success){
    document.getElementById("var-value-"+id).innerHTML = data.quantity;
    document.getElementById("sub-value-"+id).innerHTML = data.sub_total;
    document.getElementById("total").innerHTML = data.total;
    document.getElementById("count_banner").innerHTML = data.count;
+   } else {
+    console.log("unknown error occured")
+   }
+   });
+   }
+
+
+function delete_product(id){
+    $.get("/delete/"+id+"/", function(data, status)
+   {
+   if (data.success){
+   const row = document.getElementById("row-"+data.id);
+   if (row) {
+   row.remove()
+   document.getElementById("total").innerHTML = data.total;
+   document.getElementById("count_banner").innerHTML = data.count;
+   }
+   } else {
+    console.log("unknown error occured")
+   }
    });
    }

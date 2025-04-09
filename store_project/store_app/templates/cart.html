@@ -26,7 +26,7 @@
                                 <!-- Sample Product Row -->
                                 {% for product_id, item in cart_items.items %}
 
-                                <tr>
+                                <tr id="row-{{item.product_id}}">
 
                                     <td>
                                         <img src="{{ item.product_image }}" alt="Product" width="70">
@@ -40,7 +40,7 @@
                                     </td>
                                     <td id="sub-value-{{item.product_id}}">{{item.prod_total_price}}</td>
                                     <td>
-                                        <button class="btn btn-danger btn-sm">X</button>
+                                        <button id="{{item.product_id}}" onclick="delete_product(this.id)" class="btn btn-danger btn-sm">X</button>
                                     </td>
                                 </tr>
 

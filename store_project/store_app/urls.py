@@ -14,4 +14,5 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('onload/', views.onload, name='onload'),
     path('quantity/<str:action>/<int:id>/',views.quantity,name='quantity'),
+    path('delete/<int:id>/',views.delete,name='delete'),
 ]

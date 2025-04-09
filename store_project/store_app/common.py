@@ -95,7 +95,7 @@ def increment_decrement(action,id,request):
             cart[str(id)]['prod_total_price'] = cart[str(id)]['product_quantity'] * cart[str(id)]['product_unit_price']
             request.session['cart'] = cart
             request.session.modified = True
-            return JsonResponse({'quantity':  cart[str(id)]['product_quantity'],
+            return JsonResponse({'success':True,'quantity':  cart[str(id)]['product_quantity'],
                              'sub_total':cart[str(id)]['prod_total_price'],'total':cart_total_price(cart,request),
                                  'count':cart_count(request)})
         elif action == 'dec':
@@ -104,14 +104,28 @@ def increment_decrement(action,id,request):
                 cart[str(id)]['prod_total_price'] = cart[str(id)]['product_quantity'] * cart[str(id)]['product_unit_price']
                 request.session['cart'] = cart
                 request.session.modified = True
-                return JsonResponse({'quantity': cart[str(id)]['product_quantity'],
+                return JsonResponse({'success':True,'quantity': cart[str(id)]['product_quantity'],
                                  'sub_total':cart[str(id)]['prod_total_price'],'total':cart_total_price(cart,request),
                                      'count':cart_count(request)})
             else:
-                return JsonResponse({'quantity': cart[str(id)]['product_quantity'],
+                return JsonResponse({'success':True,'quantity': cart[str(id)]['product_quantity'],
                                  'sub_total':cart[str(id)]['prod_total_price'],'total':cart_total_price(cart,request),
                                      'count':cart_count(request)})
         else:
             print("unknown error occured at quantity")
     else:
         print("database increment/decrement operations")
+
+
+def delete_product(request,id):
+    if not request.user.is_authenticated:
+        cart = request.session.get('cart', {})
+        if str(id) in cart:
+            del cart[str(id)]
+            request.session['cart'] = cart
+            request.session.modified = True
+            return JsonResponse({'success':True,'id':id,'total':cart_total_price(cart,request),'count':cart_count(request)})
+        else:
+            return "no id found"
+    else:
+        print('database delete')
