@@ -47,10 +47,17 @@ def json_serializable(user,request):
             user_data['image'] = request.build_absolute_uri(user.image.url)
     return user_data
 
+
+def loged_in_cart_save(user,product,quantity,product_total_price,cart_total):
+    Cart(user=user, product=product,
+         quantity=quantity, product_total_price=product_total_price,
+         cart_total_price=cart_total).save()
+
 def get_cart(submitt,user,request):
     if submitt:
         if user:
-            print("save to database",submitt)
+            product = fetch_single_product(id=submitt['product_id'], product_type=False)
+            loged_in_cart_save(request.user,product,submitt['product_quantity'],submitt['product_total_price'],0)
         else:
             cart = request.session.get('cart',{})
             product_id = str(submitt['product_id'])
@@ -59,7 +66,7 @@ def get_cart(submitt,user,request):
                 , 'product_quantity':int(submitt['product_quantity']), 'product_name': submitt['product_name'],
                 'product_brand_name': submitt['product_brand_name'],
                 'product_description': submitt['product_product_description'],
-                'product_color': submitt['product_product_color'], 'product_image': submitt['product_image'],
+                'product_color': submitt['product_product_color'], 'product_image':submitt['product_image'],
                 'product_unit_price': int(submitt['product_unit_price']), 'product_id': submitt['product_id']
 
             }
@@ -67,7 +74,19 @@ def get_cart(submitt,user,request):
             request.session.modified=True
     else:
         if user:
-            return Cart.objects.all()
+            cart_items = {}
+            for items in Cart.objects.filter(user=request.user):
+                cart_items[str(items.product.id)] = {
+                    'prod_total_price': items.product_total_price
+                    ,'product_quantity': items.quantity, 'product_name':items.product.product_name,
+                    'product_brand_name': items.product.product_brand_name,
+                    'product_description': items.product.product_description,
+                    'product_color': items.product.product_color, 'product_image':items.product.product_image.url,
+                    'product_unit_price': items.product.unit_product_price , 'product_id':items.product.id
+
+                }
+
+            return cart_items
         else:
             cart = request.session.get('cart',{})
             return cart
