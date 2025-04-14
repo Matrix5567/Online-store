@@ -146,4 +146,8 @@ def delete_product(request,id):
         else:
             return "no id found"
     else:
-        print('database delete')
+        item=Cart.objects.get(product=fetch_single_product(id=id,product_type=False),user=request.user)
+        if item:
+            item.delete()
+        return JsonResponse(
+            {'success': True, 'id': id,'count': cart_count(request)})

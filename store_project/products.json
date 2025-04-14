@@ -1,39 +1,39 @@
 [
   {
-    "product_name" : "Sunglasses",
-    "product_description" : "Stylish Polarized sunglasses protects from UV radiation",
-    "product_brand_name" : "Rayban",
-    "product_price" : "3000",
-    "product_image" : "product_main_images/sun1.jpg",
+    "product_name" : "LED TV",
+    "product_description" : "Smart 4k UHD TV",
+    "product_brand_name" : "Sony",
+    "unit_product_price" : "74000",
+    "product_image" : "product_main_images/a.jpeg",
     "product_color" : "black",
     "is_featured_product" : "True",
     "subimage": [
       {
-        "product_subimage" : "product_sub_images/sun2.jpeg"
+        "product_subimage" : "product_sub_images/a2.jpeg"
       },
       {
-        "product_subimage" : "product_sub_images/sun3.jpeg"
+        "product_subimage" : "product_sub_images/a3.jpeg"
       },
       {
-        "product_subimage" : "product_sub_images/sun4.jpeg"
+        "product_subimage" : "product_sub_images/a4.jpeg"
       },
       {
-        "product_subimage" : "product_sub_images/sun5.jpeg"
+        "product_subimage" : "product_sub_images/a5.jpeg"
       },
        {
-        "product_subimage" : "product_sub_images/sun6.jpeg"
+        "product_subimage" : "product_sub_images/a1.jpeg"
       },
       {
-        "product_subimage" : "product_sub_images/sun7.jpeg"
+        "product_subimage" : "product_sub_images/a2.jpeg"
       },
       {
-        "product_subimage" : "product_sub_images/sun8.jpeg"
+        "product_subimage" : "product_sub_images/a3.jpeg"
       },
        {
-        "product_subimage" : "product_sub_images/sun9.jpeg"
+        "product_subimage" : "product_sub_images/a4.jpeg"
       },
        {
-        "product_subimage" : "product_sub_images/sun10.jpeg"
+        "product_subimage" : "product_sub_images/a5.jpeg"
       }
     ]
   }
