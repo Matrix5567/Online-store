@@ -96,7 +96,7 @@ def cart_count(request):
         cart = request.session.get('cart', {})
         return len(cart)
     else:
-        print("count from database")
+        return len(Cart.objects.filter(user=request.user))
 
 
 def cart_total_price(cart,request):

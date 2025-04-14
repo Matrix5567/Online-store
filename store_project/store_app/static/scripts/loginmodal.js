@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.success && data.user.image) {
                 document.getElementById('std_profile_pic').src=data.user.image;    // onload function for user details
                 document.getElementById("logout").style.display = "block";
+                document.getElementById("count_banner").innerHTML = data.count;
             } else {
             document.getElementById("count_banner").innerHTML = data.count;
             }
