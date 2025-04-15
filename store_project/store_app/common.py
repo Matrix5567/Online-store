@@ -99,11 +99,27 @@ def cart_count(request):
         return len(Cart.objects.filter(user=request.user))
 
 
+def db_total_price(request):
+    total_price = 0
+    if request.user.is_authenticated:
+        item = Cart.objects.filter(user=request.user)
+        for items in item:
+            total_price +=items.product_total_price
+        return total_price
+    else:
+        return "error"
+
+
 def cart_total_price(cart,request):
     total_price = 0
-    for item in cart.values():
-        total_price += int(item['prod_total_price'])
-    return total_price
+    if cart:
+        for item in cart.values():
+            total_price += int(item['prod_total_price'])
+        return total_price
+    else:
+        return db_total_price(request)
+
+
 
 def increment_decrement(action,id,request):
     if not request.user.is_authenticated:
@@ -132,7 +148,29 @@ def increment_decrement(action,id,request):
         else:
             print("unknown error occured at quantity")
     else:
-        print("database increment/decrement operations")
+        item = Cart.objects.get(product=fetch_single_product(id=id, product_type=False), user=request.user)
+        if action == 'inc':
+            item.quantity+=1
+            item.product_total_price = item.product.unit_product_price * item.quantity
+            item.save()
+            return JsonResponse({'success': True, 'quantity':item.quantity,
+                                 'count': cart_count(request),
+                                 'sub_total':item.product_total_price,'total':db_total_price(request)})
+        elif action == 'dec':
+            if item.quantity>1:
+                item.quantity -= 1
+                item.product_total_price = item.product.unit_product_price * item.quantity
+                item.save()
+                return JsonResponse({'success': True, 'quantity': item.quantity,
+                                     'count': cart_count(request),
+                                     'sub_total':item.product_total_price,'total':db_total_price(request)})
+
+            else :
+                return JsonResponse({'success': True, 'quantity': item.quantity,
+                                     'count': cart_count(request),
+                                     'sub_total': item.product_total_price, 'total': db_total_price(request)})
+        else:
+            print("unknown error occured at quantity")
 
 
 def delete_product(request,id):
@@ -144,10 +182,12 @@ def delete_product(request,id):
             request.session.modified = True
             return JsonResponse({'success':True,'id':id,'total':cart_total_price(cart,request),'count':cart_count(request)})
         else:
-            return "no id found"
+            return ({'success': False})
     else:
         item=Cart.objects.get(product=fetch_single_product(id=id,product_type=False),user=request.user)
         if item:
             item.delete()
+        else:
+            return ({'success': False})
         return JsonResponse(
-            {'success': True, 'id': id,'count': cart_count(request)})
+            {'success': True, 'id': id,'count': cart_count(request),'total':db_total_price(request)})
