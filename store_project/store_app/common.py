@@ -98,27 +98,18 @@ def cart_count(request):
     else:
         return len(Cart.objects.filter(user=request.user))
 
-
-def db_total_price(request):
+def user_total(cart,request):
     total_price = 0
     if request.user.is_authenticated:
         item = Cart.objects.filter(user=request.user)
         for items in item:
-            total_price +=items.product_total_price
+            total_price += items.product_total_price
         return total_price
     else:
-        return "error"
-
-
-def cart_total_price(cart,request):
-    total_price = 0
-    if cart:
-        for item in cart.values():
-            total_price += int(item['prod_total_price'])
-        return total_price
-    else:
-        return db_total_price(request)
-
+        if cart:
+            for item in cart.values():
+                total_price += int(item['prod_total_price'])
+            return total_price
 
 
 def increment_decrement(action,id,request):
@@ -130,7 +121,7 @@ def increment_decrement(action,id,request):
             request.session['cart'] = cart
             request.session.modified = True
             return JsonResponse({'success':True,'quantity':  cart[str(id)]['product_quantity'],
-                             'sub_total':cart[str(id)]['prod_total_price'],'total':cart_total_price(cart,request),
+                             'sub_total':cart[str(id)]['prod_total_price'],'total':user_total(cart,request),
                                  'count':cart_count(request)})
         elif action == 'dec':
             if cart[str(id)]['product_quantity'] >1:
@@ -139,11 +130,11 @@ def increment_decrement(action,id,request):
                 request.session['cart'] = cart
                 request.session.modified = True
                 return JsonResponse({'success':True,'quantity': cart[str(id)]['product_quantity'],
-                                 'sub_total':cart[str(id)]['prod_total_price'],'total':cart_total_price(cart,request),
+                                 'sub_total':cart[str(id)]['prod_total_price'],'total':user_total(cart,request),
                                      'count':cart_count(request)})
             else:
                 return JsonResponse({'success':True,'quantity': cart[str(id)]['product_quantity'],
-                                 'sub_total':cart[str(id)]['prod_total_price'],'total':cart_total_price(cart,request),
+                                 'sub_total':cart[str(id)]['prod_total_price'],'total':user_total(cart,request),
                                      'count':cart_count(request)})
         else:
             print("unknown error occured at quantity")
@@ -155,7 +146,7 @@ def increment_decrement(action,id,request):
             item.save()
             return JsonResponse({'success': True, 'quantity':item.quantity,
                                  'count': cart_count(request),
-                                 'sub_total':item.product_total_price,'total':db_total_price(request)})
+                                 'sub_total':item.product_total_price,'total':user_total(cart=False,request=request)})
         elif action == 'dec':
             if item.quantity>1:
                 item.quantity -= 1
@@ -163,12 +154,12 @@ def increment_decrement(action,id,request):
                 item.save()
                 return JsonResponse({'success': True, 'quantity': item.quantity,
                                      'count': cart_count(request),
-                                     'sub_total':item.product_total_price,'total':db_total_price(request)})
+                                     'sub_total':item.product_total_price,'total':user_total(cart=False,request=request)})
 
             else :
                 return JsonResponse({'success': True, 'quantity': item.quantity,
                                      'count': cart_count(request),
-                                     'sub_total': item.product_total_price, 'total': db_total_price(request)})
+                                     'sub_total': item.product_total_price,'total':user_total(cart=False,request=request)})
         else:
             print("unknown error occured at quantity")
 
@@ -180,7 +171,7 @@ def delete_product(request,id):
             del cart[str(id)]
             request.session['cart'] = cart
             request.session.modified = True
-            return JsonResponse({'success':True,'id':id,'total':cart_total_price(cart,request),'count':cart_count(request)})
+            return JsonResponse({'success':True,'id':id,'total':user_total(cart,request),'count':cart_count(request)})
         else:
             return ({'success': False})
     else:
@@ -190,4 +181,4 @@ def delete_product(request,id):
         else:
             return ({'success': False})
         return JsonResponse(
-            {'success': True, 'id': id,'count': cart_count(request),'total':db_total_price(request)})
+            {'success': True, 'id': id,'count': cart_count(request),'total':user_total(cart=False,request=request)})
