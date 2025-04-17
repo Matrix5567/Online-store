@@ -103,3 +103,8 @@ def quantity(request,action,id):
 
 def delete(request,id):
     return delete_product(request,id)
+
+
+def checkout(request):
+    if request.user.is_authenticated:
+        print("checkout enteredd")

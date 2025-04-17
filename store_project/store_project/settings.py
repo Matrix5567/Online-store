@@ -129,3 +129,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51KtR2ZSHGiVmY47gCozUIi4JuhomXP6fjLbcwa64ZKA2FWyLvVqHHuoebHJUNTUyhQSbEd2YvYklJJLvdfN5u8SQ00aeXgmDjt'
+STRIPE_SECRET_KEY = 'sk_test_51KtR2ZSHGiVmY47gsaDRSKkeAd0EACIl9IfzOlY6TQIoSA4L62OKakUxbZMDOrDjEaLb45TozDVoloKYIWbbswMW00BLIZEOUT'
+BACKEND_DOMAIN = '//127.0.0.1:8000'
+PAYMENT_SUCCESS_URL = '//127.0.0.1:8000/success/'
+PAYMENT_CANCEL_URL = '//127.0.0.1:8000/cancel/'
