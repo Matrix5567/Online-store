@@ -1,39 +1,39 @@
 [
   {
-    "product_name" : "LED TV",
-    "product_description" : "Smart 4k UHD TV",
-    "product_brand_name" : "Sony",
-    "unit_product_price" : "74000",
-    "product_image" : "product_main_images/a.jpeg",
-    "product_color" : "black",
-    "is_featured_product" : "True",
+    "product_name" : "Jeans",
+    "product_description" : "Denim Rugged Jeans",
+    "product_brand_name" : "Levis",
+    "unit_product_price" : "1500",
+    "product_image" : "product_main_images/jn_main.jpeg",
+    "product_color" : "Blue",
+    "is_featured_product" : "False",
     "subimage": [
       {
-        "product_subimage" : "product_sub_images/a2.jpeg"
+        "product_subimage" : "product_sub_images/jn1.jpeg"
       },
       {
-        "product_subimage" : "product_sub_images/a3.jpeg"
+        "product_subimage" : "product_sub_images/jn2.jpeg"
       },
       {
-        "product_subimage" : "product_sub_images/a4.jpeg"
+        "product_subimage" : "product_sub_images/jn3.jpeg"
       },
       {
-        "product_subimage" : "product_sub_images/a5.jpeg"
+        "product_subimage" : "product_sub_images/jn4.jpeg"
       },
        {
-        "product_subimage" : "product_sub_images/a1.jpeg"
+        "product_subimage" : "product_sub_images/jn5.jpeg"
       },
       {
-        "product_subimage" : "product_sub_images/a2.jpeg"
+        "product_subimage" : "product_sub_images/jn6.jpeg"
       },
       {
-        "product_subimage" : "product_sub_images/a3.jpeg"
+        "product_subimage" : "product_sub_images/jn7.jpeg"
       },
        {
-        "product_subimage" : "product_sub_images/a4.jpeg"
+        "product_subimage" : "product_sub_images/jn8.jpeg"
       },
        {
-        "product_subimage" : "product_sub_images/a5.jpeg"
+        "product_subimage" : "product_sub_images/jn9.jpeg"
       }
     ]
   }

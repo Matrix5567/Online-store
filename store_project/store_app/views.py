@@ -7,6 +7,7 @@ from . common import  fetch_product_subimage, fetch_single_product, categories, 
 from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator
 import stripe
 from .models import Cart
+from django.core.paginator import Paginator
 from django.conf import settings
 
 # Create your views here.
@@ -78,15 +79,23 @@ def contact(request):
 def about(request):
     return render(request,'about.html')
 
+def pagenation(request,products):
+    page_number = request.GET.get('page')
+    paginator = Paginator(products, 6)
+    page_obj = paginator.get_page(page_number)
+    return page_obj
+
 def shop(request,key=None):
     all_products = []
     if key:
         products = categories(URL=key)
         for product in products:
             all_products.extend(fetch_single_product(product_type=product, id=False))
-        return render(request, 'shop.html', {'product': all_products})
+        return render(request, 'shop.html', {'page_obj':pagenation(request,all_products)})
     else:
-        return render(request, 'shop.html', {'product': fetch_single_product(product_type=False, id=False)})
+        all_products = fetch_single_product(product_type=False, id=False)
+
+        return render(request, 'shop.html',{'page_obj':pagenation(request,all_products)})
 
 def single(request,id):
     return render(request,'shop-single.html',{'sub_images':fetch_product_subimage(id),
