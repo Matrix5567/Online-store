@@ -116,7 +116,7 @@ def total_quantity(request):
 
 
 
-
+@login_required()
 def checkout(request):
     if request.user.is_authenticated and int(user_total(cart=False,request=request))*100>0 :
         line_items=[]
@@ -147,6 +147,7 @@ def checkout(request):
             billing_address_collection='required',
             customer_creation='always',
         )
+        items.delete()
         return redirect(checkout_session.url)
     else:
         return redirect('home')
