@@ -1,11 +1,16 @@
 from django.forms.models import model_to_dict
 from datetime import datetime
-
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 
 from . models import Products, ProductsSubimage, Categories, CustomUser, Cart
 
 
+def pagenation(request,products):
+    page_number = request.GET.get('page')
+    paginator = Paginator(products, 6)
+    page_obj = paginator.get_page(page_number)
+    return page_obj
 
 
 def fetch_product_subimage(id):    # fetching subimages of products

@@ -3,11 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from . common import  fetch_product_subimage, fetch_single_product, categories, register, json_serializable\
-    , get_cart, increment_decrement, cart_count, delete_product, user_total
+    , get_cart, increment_decrement, cart_count, delete_product, user_total, pagenation
 from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator
 import stripe
 from .models import Cart
-from django.core.paginator import Paginator
 from django.conf import settings
 
 # Create your views here.
@@ -59,7 +58,7 @@ def user_login(request):
     if user is not None:
         login(request,user)
         user_data = json_serializable(user,request=request)
-        return JsonResponse ({'success':True,'user':user_data})
+        return JsonResponse ({'success':True,'user':user_data,'count':cart_count(request)})
     else:
         return JsonResponse({'success': False, 'errors': 'Invalid login credentials'})
 
@@ -79,11 +78,7 @@ def contact(request):
 def about(request):
     return render(request,'about.html')
 
-def pagenation(request,products):
-    page_number = request.GET.get('page')
-    paginator = Paginator(products, 6)
-    page_obj = paginator.get_page(page_number)
-    return page_obj
+
 
 def shop(request,key=None):
     all_products = []
