@@ -16,4 +16,5 @@ urlpatterns = [
     path('quantity/<str:action>/<int:id>/',views.quantity,name='quantity'),
     path('delete/<int:id>/',views.delete,name='delete'),
     path('create-checkout-session',views.checkout,name='checkout'),
+    path('success/', views.success, name='success'),
 ]

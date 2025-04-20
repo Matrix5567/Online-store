@@ -56,3 +56,18 @@ function delete_product(id){
    }
    });
    }
+
+
+document.addEventListner("DOMContentLoaded", function() {
+const checkoutbutton = document.getElementById("checkout-button");
+const offlinealert = document.getElementById("offline-alert");
+checkoutbutton.addEventListner("click",function(event)
+{
+if (!navigator.onLine){
+event.preventDefault();
+offlinealert.classList.remove("d-none");
+else {
+offlinealert.classList.add("d-none");
+}
+});
+});

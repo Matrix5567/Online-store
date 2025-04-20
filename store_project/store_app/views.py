@@ -5,7 +5,9 @@ from django.shortcuts import render, redirect
 from . common import  fetch_product_subimage, fetch_single_product, categories, register, json_serializable\
     , get_cart, increment_decrement, cart_count, delete_product, user_total
 from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator
-
+import stripe
+from .models import Cart
+from django.conf import settings
 
 # Create your views here.
 
@@ -104,7 +106,51 @@ def quantity(request,action,id):
 def delete(request,id):
     return delete_product(request,id)
 
+def total_quantity(request):
+    total_qty = 0
+    if request.user.is_authenticated:
+        qty=Cart.objects.filter(user=request.user)
+        for quantity in qty:
+            total_qty+=int(quantity.quantity)
+    return total_qty
+
+
+
 
 def checkout(request):
-    if request.user.is_authenticated:
-        print("checkout enteredd")
+    if request.user.is_authenticated and int(user_total(cart=False,request=request))*100>0 :
+        line_items=[]
+
+        items=Cart.objects.filter(user=request.user)
+        for item in items:
+            line_items.append({
+                'price_data': {
+                    'currency': 'inr',
+                    'unit_amount':item.product.unit_product_price*100,
+                    'product_data': {
+                        'name': item.product.product_name,
+                        'images': [request.build_absolute_uri(item.product.product_image.url)] if item.product.product_image else [],
+                    },
+                },
+                'quantity': item.quantity,
+            })
+
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            line_items=line_items,
+            metadata={"product_id":request.user},
+            mode="payment",
+            success_url=settings.PAYMENT_SUCCESS_URL,
+            cancel_url=settings.PAYMENT_CANCEL_URL,
+            customer_email=request.user,
+            billing_address_collection='required',
+            customer_creation='always',
+        )
+        return redirect(checkout_session.url)
+    else:
+        return redirect('home')
+
+@login_required()
+def success(request):
+    return render(request,'success.html')
