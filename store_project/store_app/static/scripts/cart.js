@@ -56,3 +56,13 @@ function delete_product(id){
    }
    });
    }
+
+document.getElementById('checkout-button').addEventListener('click', function () {
+    if (navigator.onLine) {
+        // Internet is available
+        window.location.href = '/create-checkout-session/';
+    } else {
+        // No internet connection
+        alert('No internet connection. Please check your connection and try again.');
+    }
+});
