@@ -15,7 +15,7 @@ $(document).ready(function(){
                     alert("item added to cart")
                     document.getElementById("count_banner").innerHTML = response.count;
                 } else {
-                   console.log("error from backend")
+                    alert(response.message);
                 }
             },
             error: function() {

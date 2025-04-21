@@ -99,8 +99,11 @@ def single(request,id):
 
 def cartpage(request):
     if request.method == 'POST':
-        get_cart(submitt=request.POST,user=request.user.is_authenticated,request=request)
-        return JsonResponse({'success':True,'count':cart_count(request)})
+        if get_cart(submitt=request.POST,user=request.user.is_authenticated,request=request):
+        # get_cart(submitt=request.POST,user=request.user.is_authenticated,request=request)
+            return JsonResponse({'success':True,'count':cart_count(request)})
+        else:
+            return JsonResponse({'success': False, 'message':'Item already present in cart'})
     else:
         return render(request,'cart.html',{'cart_items':get_cart(submitt=False,user=request.user.is_authenticated,request=request),
                                            'total':user_total(request.session.get('cart', {}),request)})

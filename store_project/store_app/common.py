@@ -58,6 +58,17 @@ def loged_in_cart_save(user,product,quantity,product_total_price,cart_total):
          quantity=quantity, product_total_price=product_total_price,
          cart_total_price=cart_total).save()
 
+
+def check_item_present(request,id):
+    if request.user.is_authenticated:
+        print("check database",id)
+    else:
+        cart=request.session.get('cart',{})
+        if id in cart:
+            return True
+        else:
+            return False
+
 def get_cart(submitt,user,request):
     if submitt:
         if user:
@@ -66,7 +77,11 @@ def get_cart(submitt,user,request):
         else:
             cart = request.session.get('cart',{})
             product_id = str(submitt['product_id'])
-            cart[product_id] = {
+            check_item_exists = check_item_present(request=request,id=product_id)
+            if check_item_exists:
+                return False
+            else:
+                cart[product_id] = {
                 'prod_total_price': int(submitt['product_total_price'])
                 , 'product_quantity':int(submitt['product_quantity']), 'product_name': submitt['product_name'],
                 'product_brand_name': submitt['product_brand_name'],
@@ -74,9 +89,10 @@ def get_cart(submitt,user,request):
                 'product_color': submitt['product_product_color'], 'product_image':submitt['product_image'],
                 'product_unit_price': int(submitt['product_unit_price']), 'product_id': submitt['product_id']
 
-            }
-            request.session['cart']=cart
-            request.session.modified=True
+                }
+                request.session['cart']=cart
+                request.session.modified=True
+                return True
     else:
         if user:
             cart_items = {}
