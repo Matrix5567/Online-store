@@ -11,7 +11,8 @@ from django.conf import settings
 
 # Create your views here.
 
-
+def check_is_logged_in(request):
+    return JsonResponse({'success': True, 'is_logged_in': request.user.is_authenticated})
 
 
 def onload(request):

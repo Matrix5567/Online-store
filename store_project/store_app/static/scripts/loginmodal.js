@@ -113,7 +113,7 @@ $(document).ready(function(){
                     document.getElementById("loginModal").style.display = "none"; // Hide modal after successful login
                     document.getElementById("std_profile_pic").src= response.user.image;
                     document.getElementById("count_banner").innerHTML = response.count;
-                    location.reload()
+//                    location.reload()
                 } else {
                     let errors = response.errors;
                     if (errors) {

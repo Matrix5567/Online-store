@@ -57,11 +57,9 @@
                 <div class="card p-3">
                     <h4>Total</h4>
                     <p id="total">{{total}}</p>
-                    {% if user.is_authenticated %}
+
                     <a id="checkout-button" class="btn btn-success w-100">Proceed to Checkout</a>
-                    {% else %}
-                    <a href="javascript:void(0);" onclick="openModal()" class="btn btn-success w-100">Proceed to Checkout</a>
-                    {% endif %}
+
                 </div>
             </div>
         </div>

@@ -56,13 +56,31 @@ function delete_product(id){
    }
    });
    }
+async function checklogin_status() {
+    try {
+        const response = await $.get('/logged-in-check');
+        if (response.success) {
+            return response.is_logged_in;
+        } else {
+            console.log("unknown error occurred");
+            return false;
+        }
+    } catch (error) {
+        console.error("Request failed:", error);
+        return false;
+    }
+}
 
-document.getElementById('checkout-button').addEventListener('click', function () {
-    if (navigator.onLine) {
-        // Internet is available
-        window.location.href = '/create-checkout-session/';
+document.getElementById('checkout-button').addEventListener('click', async function () {
+    const isLoggedIn = await checklogin_status();
+
+    if (isLoggedIn) {
+        if (navigator.onLine) {
+            window.location.href = '/create-checkout-session/';
+        } else {
+            alert('No internet connection. Please check your connection and try again.');
+        }
     } else {
-        // No internet connection
-        alert('No internet connection. Please check your connection and try again.');
+        document.getElementById("loginModal").style.display = "flex";
     }
 });
