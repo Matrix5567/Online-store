@@ -100,7 +100,6 @@ def single(request,id):
 def cartpage(request):
     if request.method == 'POST':
         if get_cart(submitt=request.POST,user=request.user.is_authenticated,request=request):
-        # get_cart(submitt=request.POST,user=request.user.is_authenticated,request=request)
             return JsonResponse({'success':True,'count':cart_count(request)})
         else:
             return JsonResponse({'success': False, 'message':'Item already present in cart'})

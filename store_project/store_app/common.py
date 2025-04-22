@@ -61,7 +61,10 @@ def loged_in_cart_save(user,product,quantity,product_total_price,cart_total):
 
 def check_item_present(request,id):
     if request.user.is_authenticated:
-        print("check database",id)
+        if Cart.objects.filter(user=request.user,product=id).exists():
+            return True
+        else:
+            return False
     else:
         cart=request.session.get('cart',{})
         if id in cart:
@@ -73,7 +76,12 @@ def get_cart(submitt,user,request):
     if submitt:
         if user:
             product = fetch_single_product(id=submitt['product_id'], product_type=False)
-            loged_in_cart_save(request.user,product,submitt['product_quantity'],submitt['product_total_price'],0)
+            check_item_exists=check_item_present(request,product)
+            if check_item_exists:
+                return False
+            else:
+                loged_in_cart_save(request.user,product,submitt['product_quantity'],submitt['product_total_price'],0)
+                return True
         else:
             cart = request.session.get('cart',{})
             product_id = str(submitt['product_id'])
