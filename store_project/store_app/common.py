@@ -67,7 +67,7 @@ def get_cart(submitt,user,request):
             cart = request.session.get('cart',{})
             product_id = str(submitt['product_id'])
             cart[product_id] = {
-                'prod_total_price': int(submitt['product_total_price']), 'prod_size': submitt['product-size']
+                'prod_total_price': int(submitt['product_total_price'])
                 , 'product_quantity':int(submitt['product_quantity']), 'product_name': submitt['product_name'],
                 'product_brand_name': submitt['product_brand_name'],
                 'product_description': submitt['product_product_description'],
