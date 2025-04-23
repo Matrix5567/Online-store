@@ -139,6 +139,8 @@ $(document).ready(function(){
 
         cartBody.innerHTML += row;
     }
+        document.getElementById("total").innerHTML = response.total;
+         document.getElementById("count_banner").innerHTML = response.count;
                 } else {
                     let errors = response.errors;
                     if (errors) {
