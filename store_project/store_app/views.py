@@ -59,7 +59,8 @@ def user_login(request):
     if user is not None:
         login(request,user)
         user_data = json_serializable(user,request=request)
-        return JsonResponse ({'success':True,'user':user_data,'count':cart_count(request)})
+        return JsonResponse ({'success':True,'user':user_data,'count':cart_count(request),
+                              'cart_items':get_cart(submitt=False,user=request.user.is_authenticated,request=request)})
     else:
         return JsonResponse({'success': False, 'errors': 'Invalid login credentials'})
 

@@ -113,7 +113,32 @@ $(document).ready(function(){
                     document.getElementById("loginModal").style.display = "none"; // Hide modal after successful login
                     document.getElementById("std_profile_pic").src= response.user.image;
                     document.getElementById("count_banner").innerHTML = response.count;
-//                    location.reload()
+                    console.log("from back ",response.cart_items)
+                    const cartBody = document.getElementById("cart-body");
+                    cartBody.innerHTML = "";  // Clear existing content
+
+    const cartItems = response.cart_items;
+    for (const productId in cartItems) {
+        const item = cartItems[productId];
+
+        const row = `
+        <tr id="row-${item.product_id}">
+            <td><img src="${item.product_image}" alt="Product" width="70"></td>
+            <td>${item.product_name}</td>
+            <td>${item.product_unit_price}</td>
+            <td>
+                <button id="${item.product_id}" onclick="quantity('dec', this.id)" class="btn btn-success btn-sm">-</button>
+                <span class="mx-2" id="var-value-${item.product_id}">${item.product_quantity}</span>
+                <button id="${item.product_id}" onclick="quantity('inc', this.id)" class="btn btn-success btn-sm">+</button>
+            </td>
+            <td id="sub-value-${item.product_id}">${item.prod_total_price}</td>
+            <td>
+                <button id="${item.product_id}" onclick="delete_product(this.id)" class="btn btn-danger btn-sm">X</button>
+            </td>
+        </tr>`;
+
+        cartBody.innerHTML += row;
+    }
                 } else {
                     let errors = response.errors;
                     if (errors) {
