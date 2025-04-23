@@ -2,7 +2,7 @@ from django.forms.models import model_to_dict
 from datetime import datetime
 from django.core.paginator import Paginator
 from django.http import JsonResponse
-
+from .validators import category_url_validator
 from . models import Products, ProductsSubimage, Categories, CustomUser, Cart
 
 
@@ -28,7 +28,10 @@ def fetch_single_product(id,product_type):
 
 def categories(URL):
     if URL:
-        prod_cat = Categories.objects.filter(URL=URL)
+        if category_url_validator(URL):
+            prod_cat = Categories.objects.filter(URL=URL)
+        else:
+            return False
     else:
         prod_cat = Categories.objects.all()
     return prod_cat

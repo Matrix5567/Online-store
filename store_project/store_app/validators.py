@@ -1,6 +1,6 @@
 import re
 import imghdr
-from .models import CustomUser
+from .models import CustomUser , Categories
 from django.contrib.auth.hashers import check_password
 
 def name_validator(name):
@@ -62,3 +62,8 @@ def password_validator(password):
         else:
             return None
 
+def category_url_validator(incomming_url):
+    if Categories.objects.filter(URL=incomming_url).exists():
+        return True
+    else:
+        return False

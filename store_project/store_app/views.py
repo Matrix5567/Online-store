@@ -1,6 +1,6 @@
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from . common import  fetch_product_subimage, fetch_single_product, categories, register, json_serializable\
     , get_cart, increment_decrement, cart_count, delete_product, user_total, pagenation
@@ -87,9 +87,12 @@ def shop(request,key=None):
     all_products = []
     if key:
         products = categories(URL=key)
-        for product in products:
-            all_products.extend(fetch_single_product(product_type=product, id=False))
-        return render(request, 'shop.html', {'page_obj':pagenation(request,all_products)})
+        if not products:
+            return HttpResponse('unauthorized url')
+        else:
+            for product in products:
+                all_products.extend(fetch_single_product(product_type=product, id=False))
+            return render(request, 'shop.html', {'page_obj':pagenation(request,all_products)})
     else:
         all_products = fetch_single_product(product_type=False, id=False)
 
