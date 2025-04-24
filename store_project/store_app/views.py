@@ -88,19 +88,26 @@ def shop(request,key=None):
     if key:
         products = categories(URL=key)
         if not products:
-            return HttpResponse('unauthorized url')
+            return HttpResponse ('unauthorized')
         else:
             for product in products:
-                all_products.extend(fetch_single_product(product_type=product, id=False))
-            return render(request, 'shop.html', {'page_obj':pagenation(request,all_products)})
+                if fetch_single_product(product_type=product, id=False):
+                    all_products.extend(fetch_single_product(product_type=product, id=False))
+                    return render(request, 'shop.html', {'page_obj':pagenation(request,all_products)})
+                else:
+                    return HttpResponse('unauthorized')
     else:
         all_products = fetch_single_product(product_type=False, id=False)
 
         return render(request, 'shop.html',{'page_obj':pagenation(request,all_products)})
 
 def single(request,id):
-    return render(request,'shop-single.html',{'sub_images':fetch_product_subimage(id),
-                                              'product':fetch_single_product(id=id,product_type=False)})
+    items = fetch_single_product(id=id,product_type=False)
+    if items:
+        return render(request,'shop-single.html',{'sub_images':fetch_product_subimage(id),
+                                              'product':items})
+    else:
+        return HttpResponse('unauthorized')
 
 def cartpage(request):
     if request.method == 'POST':

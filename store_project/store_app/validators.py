@@ -1,7 +1,9 @@
 import re
 import imghdr
-from .models import CustomUser , Categories
+from .models import CustomUser, Categories, Products
 from django.contrib.auth.hashers import check_password
+
+
 
 def name_validator(name):
     if not name:
@@ -67,3 +69,18 @@ def category_url_validator(incomming_url):
         return True
     else:
         return False
+
+def fetch_single_product_validator(id,product_type):
+    if product_type:
+        if Products.objects.filter(product_type=product_type).exists():
+            return True
+        else:
+            return False
+    else:
+        try:
+            Products.objects.get(id=id)
+            return True
+        except Products.DoesNotExist:
+            return False
+
+
