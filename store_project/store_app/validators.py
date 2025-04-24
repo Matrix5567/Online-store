@@ -1,6 +1,6 @@
 import re
 import imghdr
-from .models import CustomUser, Categories, Products
+from .models import CustomUser, Categories, Products, ProductsSubimage
 from django.contrib.auth.hashers import check_password
 
 
@@ -82,5 +82,12 @@ def fetch_single_product_validator(id,product_type):
             return True
         except Products.DoesNotExist:
             return False
+
+
+def fetch_product_subimage_validator(id):
+    if ProductsSubimage.objects.filter(product=id).exists():
+        return True
+    else:
+        return False
 
 

@@ -2,9 +2,10 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
-from . common import  fetch_product_subimage, fetch_single_product, categories, register, json_serializable\
+from . common import fetch_product_subimage, fetch_single_product, categories, register, json_serializable\
     , get_cart, increment_decrement, cart_count, delete_product, user_total, pagenation
-from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator
+from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator\
+,category_url_validator, fetch_single_product_validator,fetch_product_subimage_validator
 import stripe
 from .models import Cart
 from django.conf import settings
@@ -86,28 +87,27 @@ def about(request):
 def shop(request,key=None):
     all_products = []
     if key:
-        products = categories(URL=key)
-        if not products:
-            return HttpResponse ('unauthorized')
-        else:
+        if category_url_validator(key):
+            products = categories(URL=key)
             for product in products:
-                if fetch_single_product(product_type=product, id=False):
+                if fetch_single_product_validator(id=False,product_type=product):
                     all_products.extend(fetch_single_product(product_type=product, id=False))
                     return render(request, 'shop.html', {'page_obj':pagenation(request,all_products)})
                 else:
-                    return HttpResponse('unauthorized')
+                    return HttpResponse('Unauthorized')
+        else:
+            return HttpResponse('Unauthorized')
     else:
         all_products = fetch_single_product(product_type=False, id=False)
-
         return render(request, 'shop.html',{'page_obj':pagenation(request,all_products)})
 
 def single(request,id):
-    items = fetch_single_product(id=id,product_type=False)
-    if items:
+    if fetch_single_product_validator(id=id,product_type=False) and fetch_product_subimage_validator(id):
         return render(request,'shop-single.html',{'sub_images':fetch_product_subimage(id),
-                                              'product':items})
+                                              'product':fetch_single_product(id=id,product_type=False)})
     else:
-        return HttpResponse('unauthorized')
+        return HttpResponse('Unauthorized')
+
 
 def cartpage(request):
     if request.method == 'POST':
