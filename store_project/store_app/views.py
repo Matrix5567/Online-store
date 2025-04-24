@@ -120,10 +120,17 @@ def cartpage(request):
                                            'total':user_total(request.session.get('cart', {}),request)})
 
 def quantity(request,action,id):
-    return increment_decrement(action=action,id=id,request=request)
+    if fetch_single_product_validator(id=id, product_type=False):
+        return increment_decrement(action=action,id=id,request=request)
+    else:
+        return HttpResponse('Unauthorized')
 
 def delete(request,id):
-    return delete_product(request,id)
+    if fetch_single_product_validator(id=id, product_type=False):
+        return delete_product(request,id)
+    else:
+        return HttpResponse('Unauthorized')
+
 
 def total_quantity(request):
     total_qty = 0
