@@ -84,3 +84,4 @@ document.getElementById('checkout-button').addEventListener('click', async funct
         document.getElementById("loginModal").style.display = "flex";
     }
 });
+
