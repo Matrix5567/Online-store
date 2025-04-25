@@ -92,14 +92,15 @@ def shop(request,key=None):
             for product in products:
                 if fetch_single_product_validator(id=False,product_type=product):
                     all_products.extend(fetch_single_product(product_type=product, id=False))
-                    return render(request, 'shop.html', {'page_obj':pagenation(request,all_products)})
+                    return render(request, 'shop.html', {'page_obj':pagenation(request,all_products),
+                                                         'section_name':key})
                 else:
                     return HttpResponse('Unauthorized')
         else:
             return HttpResponse('Unauthorized')
     else:
         all_products = fetch_single_product(product_type=False, id=False)
-        return render(request, 'shop.html',{'page_obj':pagenation(request,all_products)})
+        return render(request, 'shop.html',{'page_obj':pagenation(request,all_products),'section_name':'All Items'})
 
 def single(request,id):
     if fetch_single_product_validator(id=id,product_type=False) and fetch_product_subimage_validator(id):
@@ -181,3 +182,6 @@ def checkout(request):
 @login_required()
 def success(request):
     return render(request,'success.html')
+
+def custom_404(request,exception):
+    return render(request,'404.html',status=404)
