@@ -138,7 +138,7 @@ def user_total(cart,request):
         if cart:
             for item in cart.values():
                 total_price += int(item['prod_total_price'])
-            return total_price
+        return total_price
 
 
 def increment_decrement(action,id,request):
