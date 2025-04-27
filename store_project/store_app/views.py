@@ -1,6 +1,7 @@
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.forms import model_to_dict
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from . common import fetch_product_subimage, fetch_single_product, categories, register, json_serializable\
@@ -10,6 +11,7 @@ from . validators import name_validator, email_validator, phone_validator, image
 import stripe
 from .models import Cart, Products
 from django.conf import settings
+
 
 # Create your views here.
 
@@ -199,9 +201,18 @@ def custom_404(request,exception):
 def search(request):
     if request.method == 'POST':
         search_word = request.POST.get('search')
-    # section = request.POST.get('section')
+        # section = request.POST.get('section')
         results = Products.objects.filter(Q(product_name__icontains=search_word) | Q(product_description__icontains=search_word) |
                                   Q(product_brand_name__icontains=search_word))
-        return JsonResponse({'success':True,'results':results})
+        product_list = []
+        for product in pagenation(request, results).object_list:
+            product_list.append({
+                'id': product.id,
+                'product_name': product.product_name,
+                'product_brand_name': product.product_brand_name,
+                'product_image': product.product_image.url,
+                'unit_product_price': product.unit_product_price,
+            })
+        return JsonResponse({'success':True,'page_obj':product_list})
     else:
         return JsonResponse({'success':False,'results':'unauthorized'})
