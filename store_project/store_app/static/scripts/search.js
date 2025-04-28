@@ -12,6 +12,7 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 if (response.success) {
+                    document.getElementById("section_name").innerHTML=response.section_name;
                     const container = $(".row").eq(2); // Target the row containing products
                     container.empty(); // Clear existing products
 
