@@ -201,7 +201,7 @@ def custom_404(request,exception):
 def search(request):
     if request.method == 'POST':
         search_word = request.POST.get('search')
-        # section = request.POST.get('section')
+        section = request.POST.get('section')
         results = Products.objects.filter(Q(product_name__icontains=search_word) | Q(product_description__icontains=search_word) |
                                   Q(product_brand_name__icontains=search_word))
         product_list = []

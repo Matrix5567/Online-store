@@ -16,8 +16,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-function openModal() {
+async function openModal() {
+        const response = await $.get('/logged-in-check');
+        if (!response.is_logged_in){
         document.getElementById("loginModal").style.display = "flex";
+        }
     }
 
 function closeModal() {
