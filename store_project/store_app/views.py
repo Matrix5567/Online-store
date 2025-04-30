@@ -4,11 +4,11 @@ from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from . common import fetch_product_subimage, fetch_single_product, categories, register, json_serializable\
-    , get_cart, increment_decrement, cart_count, delete_product, user_total, pagenation
+    , get_cart, increment_decrement, cart_count, delete_product, user_total, pagenation, show_filter
 from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator\
 ,category_url_validator, fetch_single_product_validator,fetch_product_subimage_validator
 import stripe
-from .models import Cart, Products
+from .models import Cart, Products , Categories
 from django.conf import settings
 
 
@@ -103,14 +103,16 @@ def shop(request,key=None):
                 if fetch_single_product_validator(id=False,product_type=product):
                     all_products.extend(fetch_single_product(product_type=product, id=False))
                     return render(request, 'shop.html', {'page_obj':pagenation(request,all_products),
-                                                         'section_name':key})
+                                                         'section_name':key,'categories':show_filter()['categories']
+                                                         ,'brands':show_filter()['brands']})
                 else:
                     return HttpResponse('Unauthorized')
         else:
             return HttpResponse('Unauthorized')
     else:
         all_products = fetch_single_product(product_type=False, id=False)
-        return render(request, 'shop.html',{'page_obj':pagenation(request,all_products),'section_name':key})
+        return render(request, 'shop.html',{'page_obj':pagenation(request,all_products),'section_name':key,
+                                            'categories': show_filter()['categories'],'brands': show_filter()['brands']})
 
 def single(request,id):
     if fetch_single_product_validator(id=id,product_type=False) and fetch_product_subimage_validator(id):
@@ -215,3 +217,11 @@ def search(request):
         return JsonResponse({'success':True,'page_obj':product_list,'section_name':'Search Results'})
     else:
         return JsonResponse({'success':False,'results':'unauthorized'})
+
+def filter(request):
+    categories = Categories.objects.values_list('product_Type_name', flat=True).distinct()
+    brands = Products.objects.values_list('product_brand_name', flat=True).distinct()
+    return render(request, 'shop.html', {
+            'categories': categories,
+            'brands': brands,
+        })

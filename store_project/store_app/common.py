@@ -211,3 +211,12 @@ def delete_product(request,id):
             return ({'success': False})
         return JsonResponse(
             {'success': True, 'id': id,'count': cart_count(request),'total':user_total(cart=False,request=request)})
+
+
+def show_filter():
+    categories = Categories.objects.values_list('product_Type_name', flat=True).distinct()
+    brands = Products.objects.values_list('product_brand_name', flat=True).distinct()
+    return {
+            'categories': categories,
+            'brands': brands,
+        }
