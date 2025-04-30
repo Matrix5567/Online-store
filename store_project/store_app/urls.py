@@ -19,5 +19,5 @@ urlpatterns = [
     path('create-checkout-session/',views.checkout,name='checkout'),
     path('success/', views.success, name='success'),
     path('search/', views.search, name='search'),
-    # path('filter/', views.filter, name='filter'),
+    path('filter/', views.filter, name='filter'),
 ]

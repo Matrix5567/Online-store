@@ -219,9 +219,28 @@ def search(request):
         return JsonResponse({'success':False,'results':'unauthorized'})
 
 def filter(request):
-    categories = Categories.objects.values_list('product_Type_name', flat=True).distinct()
-    brands = Products.objects.values_list('product_brand_name', flat=True).distinct()
-    return render(request, 'shop.html', {
+    if request.method == 'POST':
+        categories = Categories.objects.values_list('product_Type_name', flat=True).distinct()
+        brands = Products.objects.values_list('product_brand_name', flat=True).distinct()
+        return render(request, 'shop.html', {
             'categories': categories,
             'brands': brands,
-        })
+            })
+    else:
+        filter_type = request.GET.get('type')
+        filter_value = request.GET.get('value')
+        if filter_type == 'category':
+            products = Products.objects.filter(product_type__product_Type_name=filter_value)
+        elif filter_type == 'brand':
+            products = Products.objects.filter(product_brand_name=filter_value)
+        else:
+            products = Products.objects.none()
+
+        product_list = [{
+            'product_name': p.product_name,
+            'product_brand_name': p.product_brand_name,
+            'product_image': p.product_image.url,
+            'unit_product_price': p.unit_product_price,
+        } for p in pagenation(request, products).object_list]
+
+        return JsonResponse({'products': product_list,'section_name':'Filter Results'})
