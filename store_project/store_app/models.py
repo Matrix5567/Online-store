@@ -50,3 +50,14 @@ class Cart(models.Model):
 
     def __str__(self):
         return f"{self.user}"
+
+
+class Payment_History(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    stripe_payment_intent = models.CharField(max_length=100)
+    amount = models.IntegerField()
+    currency = models.CharField(max_length=100)
+    status = models.CharField(max_length=100)
+    payment_method = models.CharField(max_length=100)
+    receipt_url = models.URLField()
+    timestamp =models.DateTimeField()
