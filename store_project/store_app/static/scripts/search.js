@@ -73,7 +73,6 @@ $(document).ready(function () {
       },
       success: function (response) {
         document.getElementById("section_name").innerHTML=response.section_name;
-
         const container = $(".row").eq(2);
         container.empty();
 
@@ -90,7 +89,7 @@ $(document).ready(function () {
                   </div>
                 </div>
                 <div class="card-body" style="min-height:129px;">
-                  <a href="/single/${product.id}/" class="h3 text-decoration-none">${product.product_name}</a>
+                  <a  href="/single/${product.id}/" class="h3 text-decoration-none">${product.product_name}</a>
                   <h6 class="h3 text-decoration-none">${product.product_brand_name}</h6>
                   <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                     <li class="pt-2">

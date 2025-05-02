@@ -237,6 +237,7 @@ def filter(request):
             products = Products.objects.none()
 
         product_list = [{
+            'id': p.id,
             'product_name': p.product_name,
             'product_brand_name': p.product_brand_name,
             'product_image': p.product_image.url,
