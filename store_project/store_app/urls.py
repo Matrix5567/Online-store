@@ -20,4 +20,5 @@ urlpatterns = [
     path('success/', views.success, name='success'),
     path('search/', views.search, name='search'),
     path('filter/', views.filter, name='filter'),
+    path('cancel/', views.cancel, name='cancel'),
 ]

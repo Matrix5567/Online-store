@@ -100,7 +100,7 @@ def shop(request,key=None):
         if category_url_validator(key):
             products = categories(URL=key)
             for product in products:
-                if fetch_single_product_validator(id=False,product_type=product):
+                if fetch_single_product_validator(id=False,product_type=product,brand=False):
                     all_products.extend(fetch_single_product(product_type=product, id=False))
                     return render(request, 'shop.html', {'page_obj':pagenation(request,all_products),
                                                          'section_name':key,'categories':show_filter()['categories']
@@ -115,7 +115,7 @@ def shop(request,key=None):
                                             'categories': show_filter()['categories'],'brands': show_filter()['brands']})
 
 def single(request,id):
-    if fetch_single_product_validator(id=id,product_type=False) and fetch_product_subimage_validator(id):
+    if fetch_single_product_validator(id=id,product_type=False,brand=False) and fetch_product_subimage_validator(id):
         return render(request,'shop-single.html',{'sub_images':fetch_product_subimage(id),
                                               'product':fetch_single_product(id=id,product_type=False)})
     else:
@@ -133,13 +133,13 @@ def cartpage(request):
                                            'total':user_total(request.session.get('cart', {}),request)})
 
 def quantity(request,action,id):
-    if fetch_single_product_validator(id=id, product_type=False):
+    if fetch_single_product_validator(id=id, product_type=False,brand=False):
         return increment_decrement(action=action,id=id,request=request)
     else:
         return HttpResponse('Unauthorized')
 
 def delete(request,id):
-    if fetch_single_product_validator(id=id, product_type=False):
+    if fetch_single_product_validator(id=id, product_type=False,brand=False):
         return delete_product(request,id)
     else:
         return HttpResponse('Unauthorized')
@@ -189,11 +189,16 @@ def checkout(request):
         items.delete()
         return redirect(checkout_session.url)
     else:
-        return redirect('home')
+        return redirect('cancel')
 
 @login_required()
 def success(request):
     return render(request,'success.html')
+
+
+@login_required()
+def cancel(request):
+    return render(request,'cancel.html')
 
 def custom_404(request,exception):
     return render(request,'404.html',status=404)
@@ -232,7 +237,10 @@ def filter(request):
         if filter_type == 'category':
             products = Products.objects.filter(product_type__product_Type_name=filter_value)
         elif filter_type == 'brand':
-            products = Products.objects.filter(product_brand_name=filter_value)
+            if fetch_single_product_validator(id=False, product_type=False, brand=filter_value):
+                products = Products.objects.filter(product_brand_name=filter_value)
+            else:
+                return JsonResponse({'success': False, 'results': 'unauthorized'})
         else:
             products = Products.objects.none()
 
@@ -244,4 +252,4 @@ def filter(request):
             'unit_product_price': p.unit_product_price,
         } for p in pagenation(request, products).object_list]
 
-        return JsonResponse({'products': product_list,'section_name':'Filter Results'})
+        return JsonResponse({'products': product_list,'section_name':filter_value})

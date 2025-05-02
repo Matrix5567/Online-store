@@ -70,9 +70,14 @@ def category_url_validator(incomming_url):
     else:
         return False
 
-def fetch_single_product_validator(id,product_type):
+def fetch_single_product_validator(id,product_type,brand):
     if product_type:
         if Products.objects.filter(product_type=product_type).exists():
+            return True
+        else:
+            return False
+    elif brand:
+        if Products.objects.filter(product_brand_name=brand).exists():
             return True
         else:
             return False
