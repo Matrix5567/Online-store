@@ -14,4 +14,3 @@ def user_logged_in_handler(sender,request,user,**kwargs):
         exists=Cart.objects.filter(user=request.user, product=product).exists()
         if not exists:
             loged_in_cart_save(request.user,product,items['product_quantity'],items['prod_total_price'],total)
-    print("db synced successfully")

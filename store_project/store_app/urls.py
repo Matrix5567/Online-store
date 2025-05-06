@@ -5,7 +5,6 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('logged-in-check',views.check_is_logged_in,name='logged_in_check'),
     path('about/', views.about, name='about'),
-    path('contact/', views.contact, name='contact'),
     path('shop/', views.shop, name='shop'),
     path('shop/<str:key>/', views.shop, name='shop'),
     path('single/<int:id>/', views.single, name='single'),
@@ -21,4 +20,6 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('filter/', views.filter, name='filter'),
     path('cancel/', views.cancel, name='cancel'),
+    path('admindash/', views.admin_dash, name='admin_dash'),
+    # path('stripe/webhook/', views.stripe_webhook, name='stripe-webhook'),
 ]

@@ -112,6 +112,9 @@ $(document).ready(function(){
             contentType: false,
             success: function(response) {
                 if (response.success && response.user.image) {
+                    if (response.user.is_admin){
+                    window.location.href = '/admindash/';
+                    }else{
                     document.getElementById("logout").style.display = "block";
                     document.getElementById("loginModal").style.display = "none"; // Hide modal after successful login
                     document.getElementById("std_profile_pic").src= response.user.image;
@@ -143,6 +146,7 @@ $(document).ready(function(){
     }
         document.getElementById("total").innerHTML = response.total;
          document.getElementById("count_banner").innerHTML = response.count;
+         }
                 } else {
                     let errors = response.errors;
                     if (errors) {

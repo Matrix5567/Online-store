@@ -8,9 +8,9 @@ from . common import fetch_product_subimage, fetch_single_product, categories, r
 from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator\
 ,category_url_validator, fetch_single_product_validator,fetch_product_subimage_validator
 import stripe
-from .models import Cart, Products , Categories
+from .models import Cart, Products , Categories, Payment_History
 from django.conf import settings
-
+from .decorator import role_required
 
 # Create your views here.
 
@@ -65,9 +65,14 @@ def user_login(request):
         login_password = request.POST.get('password')
         user = authenticate(request, email=login_email, password=login_password)
         if user is not None:
-            login(request,user)
-            user_data = json_serializable(user,request=request)
-            return JsonResponse ({'success':True,'user':user_data,'count':cart_count(request),
+            if user.is_admin:
+                login(request, user)
+                user_data = json_serializable(user, request=request)
+                return JsonResponse({'success': True, 'user':user_data })
+            else:
+                login(request,user)
+                user_data = json_serializable(user,request=request)
+                return JsonResponse ({'success':True,'user':user_data,'count':cart_count(request),
                               'cart_items':get_cart(submitt=False,user=request.user.is_authenticated,request=request),
                               'total':user_total(request.session.get('cart', {}),request)})
         else:
@@ -84,10 +89,6 @@ def user_logout(request):
 def home(request):
     return render(request,'index.html',{'product':categories(URL=False),
                                         'featured':fetch_single_product(id=False,product_type=False)})
-
-
-def contact(request):
-    return render(request,'contact.html')
 
 def about(request):
     return render(request,'about.html')
@@ -253,3 +254,59 @@ def filter(request):
         } for p in pagenation(request, products).object_list]
 
         return JsonResponse({'products': product_list,'section_name':filter_value})
+
+# @login_required()
+# def stripe_webhook(request):              ############### webhooks disabled for now
+#     print("webhook calleddddddddddd")
+#     # payload = request.body
+#     # sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
+#     #
+#     # try:
+#     #     event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
+#     # except ValueError as e:
+#     #     return HttpResponse(status=400)
+#     # except stripe.error.SignatureVerificationError as e:
+#     #     return HttpResponse(status=400)
+#     #
+#     # # Handle the event
+#     # if event['type'] == 'checkout.session.completed':
+#     #     session = event['data']['object']
+#     #
+#     #     # Extract data
+#     #     customer_email = session.get('customer_email')
+#     #     payment_intent = session.get('payment_intent')
+#     #     amount_total = session.get('amount_total') / 100  # Stripe stores in cents
+#     #     payment_status = session.get('payment_status')
+#     #     payment_method = session.get('payment_method_types', [''])[0]
+#     #     stripe_customer_id = session.get('customer')
+#     #
+#     #     # (Optional) Get user if you attach metadata
+#     #     user_id = session.get('metadata', {}).get('user_id')
+#     #     product_ids = session.get('metadata', {}).get('product_ids', '').split(',')
+#     #
+#     #     user = CustomUser.objects.get(id=user_id) if user_id else None
+#     #
+#     #     payment = Payment_History.objects.create(
+#     #         user=user,
+#     #         stripe_payment_intent=payment_intent,
+#     #         stripe_customer_id=stripe_customer_id,
+#     #         amount=amount_total,
+#     #         payment_method=payment_method,
+#     #         status=payment_status,
+#     #     )
+#     #
+#     #     for pid in product_ids:
+#     #         try:
+#     #             product = Products.objects.get(id=pid)
+#     #             payment.products.add(product)
+#     #         except Products.DoesNotExist:
+#     #             continue
+#     #
+#     #     payment.save()
+#     #
+#     # return HttpResponse(status=200)
+
+@role_required()
+def admin_dash(request):
+    cat_length  = len(categories(URL=False))
+    return render(request,'admin_dash.html',{'total_categories':cat_length})
