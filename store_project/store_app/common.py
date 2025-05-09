@@ -2,8 +2,8 @@ from django.forms.models import model_to_dict
 from datetime import datetime
 from django.core.paginator import Paginator
 from django.http import JsonResponse
-from . models import Products, ProductsSubimage, Categories, CustomUser, Cart
-
+from . models import Products, ProductsSubimage, Categories, CustomUser, Cart, Payment_History
+from django.db.models import Sum
 
 def pagenation(request,products):
     page_number = request.GET.get('page')
@@ -220,3 +220,13 @@ def show_filter():
             'categories': categories,
             'brands': brands,
         }
+
+def history_save(user,amount,currency,status,payment_method,order_length,total_amount):
+    if user and amount and currency and status and payment_method:
+        Payment_History.objects.create(user=user,amount=amount,currency=currency,status=status,payment_method=payment_method)
+    elif order_length:
+        return len(Payment_History.objects.all())
+    elif total_amount:
+        result = Payment_History.objects.aggregate(total=Sum('amount'))
+        total_amount = result['total']
+        return total_amount

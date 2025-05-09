@@ -58,4 +58,3 @@ class Payment_History(models.Model):
     currency = models.CharField(max_length=100)
     status = models.CharField(max_length=100)
     payment_method = models.CharField(max_length=100)
-    timestamp =models.DateTimeField()

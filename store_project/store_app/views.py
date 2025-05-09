@@ -4,11 +4,12 @@ from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from . common import fetch_product_subimage, fetch_single_product, categories, register, json_serializable\
-    , get_cart, increment_decrement, cart_count, delete_product, user_total, pagenation, show_filter
+    , get_cart, increment_decrement, cart_count, delete_product, user_total, pagenation, show_filter\
+    , history_save
 from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator\
 ,category_url_validator, fetch_single_product_validator,fetch_product_subimage_validator
 import stripe
-from .models import Cart, Products , Categories, Payment_History
+from .models import Cart, Products, Categories
 from django.conf import settings
 from .decorator import role_required
 
@@ -187,6 +188,8 @@ def checkout(request):
             billing_address_collection='required',
             customer_creation='always',
         )
+        history_save(user=request.user, amount=sum(li['price_data']['unit_amount']*li['quantity']for li in line_items),
+                     currency='inr',status='success',payment_method='card',order_length=False,total_amount=False)
         items.delete()
         return redirect(checkout_session.url)
     else:
@@ -308,5 +311,11 @@ def filter(request):
 
 @role_required()
 def admin_dash(request):
-    cat_length  = len(categories(URL=False))
-    return render(request,'admin_dash.html',{'total_categories':cat_length})
+    return render(request,'admin_dash.html',{'total_categories':len(categories(URL=False)),
+                                             'total_products':len(fetch_single_product(id=False,product_type=False)),
+                                             'total_orders':history_save(user=False,amount=False,currency=False,status=False
+                                                                         ,payment_method=False,
+                                                                         order_length=True,total_amount=False),
+                                             'total_payments':history_save(user=False,amount=False,currency=False,status=False
+                                                                         ,payment_method=False,
+                                                                         order_length=False,total_amount=True)})
