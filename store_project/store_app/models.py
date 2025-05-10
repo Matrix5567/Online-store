@@ -19,7 +19,6 @@ class Categories(models.Model):
     category_image = models.ImageField(upload_to='category_image/',null=True)
     product_Type_name = models.CharField(max_length=255)
     URL = models.CharField(max_length=25,null=True)
-    product_Sub_type_name  = models.CharField(max_length=255)
     def __str__(self):
         return self.product_Type_name
 

@@ -102,13 +102,10 @@ def shop(request,key=None):
         if category_url_validator(key):
             products = categories(URL=key)
             for product in products:
-                if fetch_single_product_validator(id=False,product_type=product,brand=False):
-                    all_products.extend(fetch_single_product(product_type=product, id=False))
-                    return render(request, 'shop.html', {'page_obj':pagenation(request,all_products),
+                all_products.extend(fetch_single_product(product_type=product, id=False))
+                return render(request, 'shop.html', {'page_obj':pagenation(request,all_products),
                                                          'section_name':key,'categories':show_filter()['categories']
                                                          ,'brands':show_filter()['brands']})
-                else:
-                    return HttpResponse('Unauthorized')
         else:
             return HttpResponse('Unauthorized')
     else:
@@ -319,3 +316,24 @@ def admin_dash(request):
                                              'total_payments':history_save(user=False,amount=False,currency=False,status=False
                                                                          ,payment_method=False,
                                                                          order_length=False,total_amount=True)})
+@role_required()
+def addcategory(request):
+    if request.method == 'POST':
+        category_image = request.FILES.get('category_image')
+        product_Type_name = request.POST.get('category_name')
+        image_error = image_validator(category_image)
+        product_Type_name_error = category_url_validator(product_Type_name)
+        errors = {}
+        if image_error:
+            errors['image'] = image_error
+        if product_Type_name_error:
+            errors['name']='This category already exists'
+        if errors:
+            return render(request,'add_category.html',{'errors':errors})
+        else:
+            category = Categories(product_Type_name=product_Type_name.capitalize(),URL= product_Type_name.lower(),
+                                  category_image=category_image)
+            category.save()
+            return render(request, 'add_category.html', {'success': 'Category successfully added'})
+    else:
+        return render(request, 'add_category.html')
