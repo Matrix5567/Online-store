@@ -88,25 +88,49 @@
 
 
     <!-- Start Categories of The Month -->
-    <section class="container py-5">
-        <div class="row text-center pt-3">
-            <div class="col-lg-6 m-auto">
-                <h1 class="h1">Categories</h1>
-                <p>
-                    Select from our various categories
-                </p>
-            </div>
+<!-- Start Categories Carousel -->
+<section class="container py-5">
+    <div class="row text-center pt-3">
+        <div class="col-lg-6 m-auto">
+            <h1 class="h1">Categories</h1>
+            <p>Select from our various categories</p>
         </div>
-        <div class="row">
-            {% for products in product %}
-            <div class="col-12 col-md-4 p-5 mt-3">
-                <a href="{% url 'shop' products.URL %}"><img src="{{ products.category_image.url }}" class="rounded-circle img-fluid border"></a>
-                <h5 class="text-center mt-3 mb-3">{{products.product_Type_name}}</h5>
-                <p class="text-center"><a href="{% url 'shop' products.URL %}" class="btn btn-success">Go Shop</a></p>
-            </div>
+    </div>
+
+    <div id="categoriesCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for category in product %}
+                {% if forloop.counter0|divisibleby:3 %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <div class="row">
+                {% endif %}
+
+                <div class="col-md-4 mb-3">
+                    <div class="card text-center border-0">
+                        <a href="{% url 'shop' category.URL %}">
+                            <img src="{{ category.category_image.url }}"  style="height: 250px;width:300px; border-radius:5px; object-fit: cover;" alt="{{ category.product_Type_name }}">
+                        </a>
+                        <h5 class="mt-3 mb-2">{{ category.product_Type_name }}</h5>
+                        <a href="{% url 'shop' category.URL %}" class="btn btn-success btn-sm">Go Shop</a>
+                    </div>
+                </div>
+
+                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                    </div>
+                </div>
+                {% endif %}
             {% endfor %}
         </div>
-    </section>
+
+        <a class="carousel-control-prev text-decoration-none w-auto ps-3" type="button" data-bs-target="#categoriesCarousel" data-bs-slide="prev">
+           <i class="fas fa-chevron-left" style="color:black;"></i>
+        </a>
+        <a class="carousel-control-next text-decoration-none w-auto pe-3" type="button" data-bs-target="#categoriesCarousel" data-bs-slide="next">
+             <i class="fas fa-chevron-right" style="color:black;"></i>
+        </a>
+    </div>
+</section>
+<!-- End Categories Carousel -->
     <!-- End Categories of The Month -->
 
 
