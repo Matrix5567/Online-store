@@ -9,7 +9,7 @@ from . common import fetch_product_subimage, fetch_single_product, categories, r
 from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator\
 ,category_url_validator, fetch_single_product_validator,fetch_product_subimage_validator
 import stripe
-from .models import Cart, Products, Categories
+from .models import Cart, Products, Categories, ProductsSubimage
 from django.conf import settings
 from .decorator import role_required
 
@@ -99,7 +99,7 @@ def about(request):
 def shop(request,key=None):
     all_products = []
     if key:
-        if category_url_validator(key):
+        if category_url_validator(incomming_url=key,product_Type_name=False):
             products = categories(URL=key)
             for product in products:
                 all_products.extend(fetch_single_product(product_type=product, id=False))
@@ -322,7 +322,7 @@ def addcategory(request):
         category_image = request.FILES.get('category_image')
         product_Type_name = request.POST.get('category_name')
         image_error = image_validator(category_image)
-        product_Type_name_error = category_url_validator(product_Type_name)
+        product_Type_name_error = category_url_validator(incomming_url=product_Type_name,product_Type_name=False)
         errors = {}
         if image_error:
             errors['image'] = image_error
@@ -337,3 +337,34 @@ def addcategory(request):
             return render(request, 'add_category.html', {'success': 'Category successfully added'})
     else:
         return render(request, 'add_category.html')
+
+@role_required()
+def addproduct(request):
+    if request.method == 'POST':
+        pro_type = request.POST.get('product_type')
+        pro_color = request.POST.get('product_color')
+        pro_name = request.POST.get('product_name')
+        pro_desc = request.POST.get('product_description')
+        pro_brand = request.POST.get('product_brand_name')
+        pro_unit_price = request.POST.get('unit_product_price')
+        pro_main_image = request.FILES.get('product_image')
+        pro_is_featured = request.POST.get('is_featured')
+        pro_sub_images = request.FILES.getlist('sub_images')
+        get_category_name = Categories.objects.get(id=pro_type)
+        if category_url_validator(incomming_url=False,product_Type_name=get_category_name):
+            products = Products(product_type=get_category_name,
+                            product_color=pro_color, product_name=pro_name,
+                            product_description=pro_desc,
+                            product_brand_name=pro_brand,
+                            unit_product_price=pro_unit_price,
+                            product_image=pro_main_image, is_featured_product=pro_is_featured)
+            products.save()
+            for sub in pro_sub_images:
+                product_sub_image = ProductsSubimage(product=products, product_subimage=sub)
+                product_sub_image.save()
+            return render(request, 'add_product.html', {'success': 'Product successfully added'})
+        else:
+            return render(request, 'add_product.html', {'success': 'Category does not exists'})
+    else:
+        category=categories(URL=False)
+        return render (request,'add_product.html',{'categories':category})

@@ -22,5 +22,6 @@ urlpatterns = [
     path('cancel/', views.cancel, name='cancel'),
     path('admindash/', views.admin_dash, name='admin_dash'),
     path('addcategory/', views.addcategory, name='addcategory'),
+    path('admin_add_product/', views.addproduct, name='admin_add_product'),
     # path('stripe/webhook/', views.stripe_webhook, name='stripe-webhook'),
 ]

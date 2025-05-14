@@ -64,11 +64,20 @@ def password_validator(password):
         else:
             return None
 
-def category_url_validator(incomming_url):
-    if Categories.objects.filter(URL=incomming_url).exists():
-        return True
+def category_url_validator(incomming_url,product_Type_name):
+    if incomming_url:
+       if Categories.objects.filter(URL=incomming_url).exists():
+           return True
+       else:
+           return False
+    elif product_Type_name:
+        if Categories.objects.filter(product_Type_name=product_Type_name).exists():
+            return True
+        else:
+            return False
     else:
         return False
+
 
 def fetch_single_product_validator(id,product_type,brand):
     if product_type:
@@ -90,6 +99,8 @@ def fetch_single_product_validator(id,product_type,brand):
 
 
 def fetch_product_subimage_validator(id):
+    if not id:
+        return "unknown error"
     if ProductsSubimage.objects.filter(product=id).exists():
         return True
     else:
