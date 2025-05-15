@@ -56,9 +56,10 @@
         </div>
 
         <!-- Main content -->
-        <div class="col-md-10 p-4">
-            <h2>Add Product</h2>
-            <form method="POST" enctype="multipart/form-data">
+
+        <div class="col-md-10 dashboard-content">
+            <h2 class="mb-4">Add Product</h2>
+            <form method="POST" enctype="multipart/form-data" class="card p-4 shadow-sm bg-white">
                 {% csrf_token %}
                 <div class="mb-3">
     <label class="form-label">Product Category</label>
@@ -107,12 +108,13 @@
                     <input type="file" name="product_image" class="form-control" accept="image/*" onchange="previewImage(this, 'main-preview')" required>
                     <div class="image-preview" id="main-preview"></div>
                 </div>
-
                 <div class="mb-3">
-                    <label class="form-label">Sub Images (up to 10)</label>
-                    <input type="file" name="sub_images" class="form-control" accept="image/*" multiple onchange="previewMultipleImages(this, 'sub-preview')" required>
-                    <div class="image-preview" id="sub-preview"></div>
-                </div>
+    <label for="sub_images" class="form-label">Sub Images (Exactly 10)</label>
+    <input type="file" class="form-control" id="sub_images" name="sub_images" accept="image/*" multiple required>
+    <div class="form-text text-danger" id="subimage-warning"></div>
+</div>
+
+<div class="row" id="preview-container"></div>
 
                 <button type="submit" class="btn btn-primary">Add Product</button>
             </form>
@@ -122,38 +124,43 @@
         </div>
     </div>
 </div>
-
 <script>
-    function previewImage(input, previewId) {
-        const preview = document.getElementById(previewId);
-        preview.innerHTML = "";
-        const file = input.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                const img = document.createElement("img");
-                img.src = reader.result;
-                preview.appendChild(img);
-            };
-            reader.readAsDataURL(file);
-        }
-    }
+    const input = document.getElementById('sub_images');
+    const previewContainer = document.getElementById('preview-container');
+    const warningText = document.getElementById('subimage-warning');
 
-    function previewMultipleImages(input, previewId) {
-        const preview = document.getElementById(previewId);
-        preview.innerHTML = "";
-        Array.from(input.files).slice(0, 10).forEach(file => {
+    input.addEventListener('change', function () {
+        previewContainer.innerHTML = '';
+        warningText.textContent = '';
+
+        const files = Array.from(this.files);
+
+        if (files.length !== 10) {
+            warningText.textContent = `You must upload exactly 10 subimages. Currently selected: ${files.length}`;
+        }
+
+        files.forEach(file => {
             const reader = new FileReader();
-            reader.onload = () => {
-                const img = document.createElement("img");
-                img.src = reader.result;
-                preview.appendChild(img);
+            reader.onload = function (e) {
+                const col = document.createElement('div');
+                col.className = 'col-md-2 mt-2 text-center';
+                col.innerHTML = `
+                    <img src="${e.target.result}" class="img-fluid rounded mb-1" style="max-height: 120px;">
+                `;
+                previewContainer.appendChild(col);
             };
             reader.readAsDataURL(file);
         });
-    }
+    });
+
+    // Prevent submission if not exactly 10 images
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const files = input.files;
+        if (files.length !== 10) {
+            e.preventDefault();
+            warningText.textContent = `Please select exactly 10 subimages. You selected ${files.length}.`;
+            window.scrollTo({ top: input.offsetTop, behavior: 'smooth' });
+        }
+    });
 </script>
-
-
-
 
