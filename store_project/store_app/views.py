@@ -9,7 +9,7 @@ from . common import fetch_product_subimage, fetch_single_product, categories, r
 from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator\
 ,category_url_validator, fetch_single_product_validator,fetch_product_subimage_validator
 import stripe
-from .models import Cart, Products, Categories, ProductsSubimage
+from .models import Cart, Products, Categories, ProductsSubimage, Payment_History
 from django.conf import settings
 from .decorator import role_required
 
@@ -353,9 +353,9 @@ def addproduct(request):
         get_category_name = Categories.objects.get(id=pro_type)
         if category_url_validator(incomming_url=False,product_Type_name=get_category_name):
             products = Products(product_type=get_category_name,
-                            product_color=pro_color, product_name=pro_name,
+                            product_color=pro_color, product_name=pro_name.capitalize(),
                             product_description=pro_desc,
-                            product_brand_name=pro_brand,
+                            product_brand_name=pro_brand.capitalize(),
                             unit_product_price=pro_unit_price,
                             product_image=pro_main_image, is_featured_product=pro_is_featured)
             products.save()
@@ -368,3 +368,9 @@ def addproduct(request):
     else:
         category=categories(URL=False)
         return render (request,'add_product.html',{'categories':category})
+
+
+@role_required()
+def admin_payment_view(request):
+    hist = Payment_History.objects.all()
+    return render(request,'admin_payment_view.html',{'payments':hist})
