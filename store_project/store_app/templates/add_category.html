@@ -35,9 +35,7 @@
             <a href="{% url 'addcategory' %}">Add Category</a>
             <a href="#">View/Edit/Delete Categories</a>
             <a href="{% url 'admin_add_product' %}">Add Product</a>
-            <a href="#">View/Edit/Delete Products</a>
-            <a href="#">Orders</a>
-            <a href="#">Users</a>
+            <a href="{% url 'admin_products_view' %}">View/Edit/Delete Products</a>
             <a href="{% url 'admin_payment_view' %}">Payments</a>
             <a href="{% url 'logout' %}" class="text-danger">Logout</a>
         </div>

@@ -48,9 +48,7 @@
             <a href="{% url 'addcategory' %}" class="text-white d-block mb-2">Add Category</a>
             <a href="#" class="text-white d-block mb-2">View/Edit/Delete Categories</a>
             <a href="{% url 'admin_add_product' %}" class="text-white d-block mb-2">Add Product</a>
-            <a href="#" class="text-white d-block mb-2">View/Edit/Delete Products</a>
-            <a href="#" class="text-white d-block mb-2">Orders</a>
-            <a href="#" class="text-white d-block mb-2">Users</a>
+            <a href="{% url 'admin_products_view' %}" class="text-white d-block mb-2">View/Edit/Delete Products</a>
             <a href="{% url 'admin_payment_view' %}" class="text-white d-block mb-2">Payments</a>
             <a href="{% url 'logout' %}" class="text-danger d-block mt-3">Logout</a>
         </div>

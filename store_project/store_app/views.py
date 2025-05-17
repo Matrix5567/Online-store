@@ -374,3 +374,8 @@ def addproduct(request):
 def admin_payment_view(request):
     hist = Payment_History.objects.all()
     return render(request,'admin_payment_view.html',{'payments':hist})
+
+
+@role_required()
+def admin_products_view(request):
+    return render(request,'admin_products_view.html',{'products':fetch_single_product(product_type=False, id=False)})

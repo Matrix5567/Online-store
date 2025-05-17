@@ -204,12 +204,16 @@ def delete_product(request,id):
         else:
             return ({'success': False})
     else:
-        item=Cart.objects.get(product=fetch_single_product(id=id,product_type=False),user=request.user)
-        if item:
-            item.delete()
+        if request.user.is_admin:
+            Products.objects.get(id=id).delete()
+            return JsonResponse({'success': True, 'id': id})
         else:
-            return ({'success': False})
-        return JsonResponse(
+            item=Cart.objects.get(product=fetch_single_product(id=id,product_type=False),user=request.user)
+            if item:
+                item.delete()
+            else:
+                return ({'success': False})
+            return JsonResponse(
             {'success': True, 'id': id,'count': cart_count(request),'total':user_total(cart=False,request=request)})
 
 
