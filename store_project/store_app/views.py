@@ -339,7 +339,14 @@ def addcategory(request):
         return render(request, 'add_category.html')
 
 @role_required()
-def addproduct(request):
+def addproduct(request,id=None):
+    if id:
+        if fetch_single_product_validator(id=id,product_type=False,brand=False):
+            category = categories(URL=False)
+            return render(request,'add_product.html',{'product':fetch_single_product(id=id,product_type=False),
+                                                      'categories':category})
+        else:
+            return HttpResponse('unauthorized')
     if request.method == 'POST':
         pro_type = request.POST.get('product_type')
         pro_color = request.POST.get('product_color')

@@ -69,7 +69,7 @@
                                 <td>{{ product.unit_product_price }}</td>
                                 <td>{{ product.is_featured_product }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-sm btn-warning">Edit</a>
+                                    <a href="{% url 'admin_edit_product' product.id %}" class="btn btn-sm btn-warning">Edit</a>
                                 </td>
                                  <td>
                                      <button id="{{product.id}}" onclick="delete_product(this.id)" class="btn btn-sm btn-warning">Delete</button>

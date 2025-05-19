@@ -64,7 +64,8 @@
     <select name="product_type" class="form-select" required>
         <option value="">-- Select Category --</option>
         {% for category in categories %}
-            <option value="{{ category.id }}">{{ category.product_Type_name }}</option>
+            <option value="{{ category.id }}" {% if product and product.product_type.id == category.id%}selected{%endif%}>
+                {{ category.product_Type_name }}</option>
         {% endfor %}
     </select>
 </div>
@@ -72,33 +73,33 @@
     <label class="form-label">Featured Product</label>
     <select name="is_featured" class="form-select" required>
         <option value="">-- Select --</option>
-            <option value="False">No</option>
-            <option value="True">Yes</option>
+            <option value="False" {% if product and not product.is_featured_product %}selected{% endif %}>No</option>
+            <option value="True"  {% if product and product.is_featured_product %}selected{% endif %}>Yes</option>
     </select>
 </div>
                 <div class="mb-3">
                     <label class="form-label">Product Name</label>
-                    <input type="text" name="product_name" class="form-control" required>
+                    <input type="text" value="{{ product.product_name }}" name="product_name" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Product Brand</label>
-                    <input type="text" name="product_brand_name" class="form-control" required>
+                    <input type="text"  value="{{ product.product_brand_name }}" name="product_brand_name" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Product Color</label>
-                    <input type="text" name="product_color" class="form-control">
+                    <input type="text" value="{{ product.product_color }}" name="product_color" class="form-control">
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Product Description</label>
-                    <textarea name="product_description" class="form-control" rows="3"></textarea>
+                    <textarea name="product_description"  class="form-control" rows="3">{{ product.product_description }}</textarea>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Price</label>
-                    <input type="number" name="unit_product_price" class="form-control" step="0.01" required>
+                    <input type="number" value="{{ product.unit_product_price }}" name="unit_product_price" class="form-control" step="0.01" required>
                 </div>
 
                 <div class="mb-3">
@@ -161,4 +162,3 @@
         }
     });
 </script>
-

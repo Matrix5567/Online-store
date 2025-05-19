@@ -25,5 +25,6 @@ urlpatterns = [
     path('admin_add_product/', views.addproduct, name='admin_add_product'),
     path('admin_payment_view/', views.admin_payment_view, name='admin_payment_view'),
     path('admin_products_view/', views.admin_products_view, name='admin_products_view'),
+    path('admin_edit_product/<int:id>/', views.addproduct, name='admin_edit_product'),
     # path('stripe/webhook/', views.stripe_webhook, name='stripe-webhook'),
 ]
