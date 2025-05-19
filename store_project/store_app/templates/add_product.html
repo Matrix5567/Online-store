@@ -105,6 +105,9 @@
                 <div class="mb-3">
                     <label class="form-label">Main Product Image</label>
                     <input type="file" name="product_image" class="form-control" accept="image/*" onchange="previewImage(this, 'main-preview')" required>
+                    {% if product and product.product_image %}
+                    <small class="form-text text-muted">Current image : {{product.product_image.name}}</small>
+                    {% endif %}
                     <div class="image-preview" id="main-preview"></div>
                 </div>
                 <div class="mb-3">
@@ -113,7 +116,15 @@
     <div class="form-text text-danger" id="subimage-warning"></div>
 </div>
 
-<div class="row" id="preview-container"></div>
+<div class="row" id="preview-container">
+     {% if product %}
+        {% for sub in sub_images %}
+            <div class="col-md-2 mt-2 text-center">
+                <img src="{{ sub.product_subimage.url }}" class="img-fluid rounded mb-1" style="max-height: 120px;">
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
 
                 <button type="submit" class="btn btn-primary">Add Product</button>
             </form>

@@ -344,7 +344,7 @@ def addproduct(request,id=None):
         if fetch_single_product_validator(id=id,product_type=False,brand=False):
             category = categories(URL=False)
             return render(request,'add_product.html',{'product':fetch_single_product(id=id,product_type=False),
-                                                      'categories':category})
+                                                      'categories':category,'sub_images':fetch_product_subimage(id),})
         else:
             return HttpResponse('unauthorized')
     if request.method == 'POST':
