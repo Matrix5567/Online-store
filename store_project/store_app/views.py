@@ -340,18 +340,37 @@ def addcategory(request):
 
 @role_required()
 def addproduct(request,id=None):
-    if id:
-        if fetch_single_product_validator(id=id,product_type=False,brand=False):
-            category = categories(URL=False)
-            return render(request,'add_product.html',{'product':fetch_single_product(id=id,product_type=False),
-                                                      'categories':category,'sub_images':fetch_product_subimage(id),})
+    if id:           # for editing products
+        if request.method == 'POST':
+            if fetch_single_product_validator(id=id, product_type=False, brand=False):
+                product = fetch_single_product(id=id, product_type=False)
+                product.product_name = request.POST.get('product_name')             # saving edited products
+                product.product_color = request.POST.get('product_color')
+                product.product_description = request.POST.get('product_description')
+                product.product_brand_name = request.POST.get('product_brand_name')
+                pro_sub_images = request.FILES.getlist('sub_images')
+                product.unit_product_price = request.POST.get('unit_product_price')
+                product.is_featured_product = request.POST.get('is_featured')
+                product.product_image = request.FILES.get('product_image')
+                product.save()
+                for sub in pro_sub_images:
+                    product_sub_image = ProductsSubimage(product=product, product_subimage=sub)
+                    product_sub_image.save()
+                return render(request, 'add_product.html', {'success': 'Product successfully edited'})
+            else:
+                return HttpResponse('unauthorized')
         else:
-            return HttpResponse('unauthorized')
+            if fetch_single_product_validator(id=id,product_type=False,brand=False):
+                category = categories(URL=False)                                          # rendering edit product
+                return render(request,'add_product.html',{'product':fetch_single_product(id=id,product_type=False),
+                                                      'categories':category,'sub_images':fetch_product_subimage(id)})
+            else:
+                return HttpResponse('unauthorized')
     if request.method == 'POST':
         pro_type = request.POST.get('product_type')
         pro_color = request.POST.get('product_color')
         pro_name = request.POST.get('product_name')
-        pro_desc = request.POST.get('product_description')
+        pro_desc = request.POST.get('product_description')        # adding a product
         pro_brand = request.POST.get('product_brand_name')
         pro_unit_price = request.POST.get('unit_product_price')
         pro_main_image = request.FILES.get('product_image')
@@ -374,7 +393,7 @@ def addproduct(request,id=None):
             return render(request, 'add_product.html', {'success': 'Category does not exists'})
     else:
         category=categories(URL=False)
-        return render (request,'add_product.html',{'categories':category})
+        return render (request,'add_product.html',{'categories':category})   # rendering add product page
 
 
 @role_required()
