@@ -352,6 +352,8 @@ def addproduct(request,id=None):
                 product.unit_product_price = request.POST.get('unit_product_price')
                 product.is_featured_product = request.POST.get('is_featured')
                 product.product_image = request.FILES.get('product_image')
+                sub_images=fetch_product_subimage(id)
+                sub_images.delete()
                 product.save()
                 for sub in pro_sub_images:
                     product_sub_image = ProductsSubimage(product=product, product_subimage=sub)
