@@ -1,3 +1,36 @@
+# E-Commerce Web Application
+
+This is a full-featured Django-based e-commerce web application that supports product browsing, filtering, cart management, checkout with Stripe integration, and a custom admin panel for product management.
+
+## Features
+
+### User-Side
+- Browse all products by category and brand
+- Search and filter products dynamically
+- Add products to cart (with session support for guests)
+- Update quantity and size of products in the cart
+- Checkout securely using Stripe (available to logged-in users)
+- View payment history after successful checkout
+
+### Admin-Side
+- Add, edit, and delete categories and brands
+- Add new products with:
+  - Product name, brand, description, color, price
+  - Main image and multiple subimages
+  - Featured toggle
+- Edit existing products (pre-filled form with all product details)
+- Preview and manage product subimages
+- Integrated Bootstrap-based UI for admin
+
+## Technologies Used
+
+- Python 3.x
+- Django 4.x
+- SQLite (or switch to PostgreSQL/MySQL for production)
+- Bootstrap 5
+- JavaScript (AJAX for subimage preview/upload)
+- Stripe for payment processing
+
 admin panel credentials
 *************
 email - testadmin@gmail.com
