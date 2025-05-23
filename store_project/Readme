@@ -28,15 +28,17 @@ This is a full-featured Django-based e-commerce web application that supports pr
 - Django 4.x
 - SQLite (or switch to PostgreSQL/MySQL for production)
 - Bootstrap 5
-- JavaScript (AJAX for subimage preview/upload)
+- JavaScript (AJAX )
 - Stripe for payment processing
+- Celery and redis for email sending
 
-admin panel credentials
+##custom admin panel credentials
+*** login to the admin panel to add product , categories etc
 *************
 email - testadmin@gmail.com
 password - testadmin123*
 
 
-note -  after payment email will be sent using celery so celery must be running
+note -  after payment email will be sent using celery so celery must be running and redis needs to be installed
 cd store_project
 celery -A store_project worker -l info
