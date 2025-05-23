@@ -35,3 +35,8 @@ admin panel credentials
 *************
 email - testadmin@gmail.com
 password - testadmin123*
+
+
+note -  after payment email will be sent using celery so celery must be running
+cd store_project
+celery -A store_project worker -l info
