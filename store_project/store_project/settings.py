@@ -129,9 +129,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'kbv94kbv9424@gmail.com'
+EMAIL_HOST_PASSWORD = 'cmlp jgph drjc sgld'
+
 
 STRIPE_PUBLISHABLE_KEY = 'pk_test_51KtR2ZSHGiVmY47gCozUIi4JuhomXP6fjLbcwa64ZKA2FWyLvVqHHuoebHJUNTUyhQSbEd2YvYklJJLvdfN5u8SQ00aeXgmDjt'
 STRIPE_SECRET_KEY = 'sk_test_51KtR2ZSHGiVmY47gsaDRSKkeAd0EACIl9IfzOlY6TQIoSA4L62OKakUxbZMDOrDjEaLb45TozDVoloKYIWbbswMW00BLIZEOUT'
 BACKEND_DOMAIN = 'http://127.0.0.1:8000'
 PAYMENT_SUCCESS_URL = 'http://127.0.0.1:8000/success/'
 PAYMENT_CANCEL_URL = 'http://127.0.0.1:8000/cancel/'
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'

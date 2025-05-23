@@ -12,6 +12,7 @@ import stripe
 from .models import Cart, Products, Categories, ProductsSubimage, Payment_History
 from django.conf import settings
 from .decorator import role_required
+from .tasks import send_emails_to_users
 
 # Create your views here.
 
@@ -194,6 +195,7 @@ def checkout(request):
 
 @login_required()
 def success(request):
+    send_emails_to_users(request.user.email)
     return render(request,'success.html')
 
 
