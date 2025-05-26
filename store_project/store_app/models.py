@@ -57,3 +57,9 @@ class Payment_History(models.Model):
     currency = models.CharField(max_length=100)
     status = models.CharField(max_length=100)
     payment_method = models.CharField(max_length=100)
+
+class OrderItem(models.Model):
+    payment = models.ForeignKey(Payment_History, on_delete=models.CASCADE,related_name='order_items')
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    price_of_purchase = models.IntegerField(null =True)

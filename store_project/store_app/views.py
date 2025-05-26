@@ -9,7 +9,7 @@ from . common import fetch_product_subimage, fetch_single_product, categories, r
 from . validators import name_validator, email_validator, phone_validator, image_validator, password_validator\
 ,category_url_validator, fetch_single_product_validator,fetch_product_subimage_validator
 import stripe
-from .models import Cart, Products, Categories, ProductsSubimage, Payment_History
+from .models import Cart, Products, Categories, ProductsSubimage, Payment_History, OrderItem
 from django.conf import settings
 from .decorator import role_required
 from .tasks import send_emails_to_users
@@ -186,8 +186,17 @@ def checkout(request):
             billing_address_collection='required',
             customer_creation='always',
         )
-        history_save(user=request.user, amount=sum(li['price_data']['unit_amount']*li['quantity']for li in line_items),
-                     currency='inr',status='success',payment_method='card',order_length=False,total_amount=False)
+
+        payment_history=Payment_History.objects.create(user=request.user, amount=sum(li['price_data']['unit_amount']*li['quantity']for li in line_items),
+                     currency='inr',status='success',payment_method='card')
+        for item in items:
+            OrderItem.objects.create(
+                payment = payment_history,
+                product = item.product,
+                quantity = item.quantity,
+                price_of_purchase = item.product_total_price        # for ML
+            )
+
         items.delete()
         return redirect(checkout_session.url)
     else:
