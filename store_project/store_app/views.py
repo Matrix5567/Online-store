@@ -13,6 +13,7 @@ from .models import Cart, Products, Categories, ProductsSubimage, Payment_Histor
 from django.conf import settings
 from .decorator import role_required
 from .tasks import send_emails_to_users
+from .insights import get_top_products
 
 # Create your views here.
 
@@ -187,7 +188,7 @@ def checkout(request):
             customer_creation='always',
         )
 
-        payment_history=Payment_History.objects.create(user=request.user, amount=sum(li['price_data']['unit_amount']*li['quantity']for li in line_items),
+        payment_history=Payment_History.objects.create(user=request.user, amount=sum(li['price_data']['unit_amount']*li['quantity']for li in line_items)//100,
                      currency='inr',status='success',payment_method='card')
         for item in items:
             OrderItem.objects.create(
@@ -319,6 +320,7 @@ def filter(request):
 
 @role_required()
 def admin_dash(request):
+    top_products_df=get_top_products()
     return render(request,'admin_dash.html',{'total_categories':len(categories(URL=False)),
                                              'total_products':len(fetch_single_product(id=False,product_type=False)),
                                              'total_orders':history_save(user=False,amount=False,currency=False,status=False
@@ -326,7 +328,8 @@ def admin_dash(request):
                                                                          order_length=True,total_amount=False),
                                              'total_payments':history_save(user=False,amount=False,currency=False,status=False
                                                                          ,payment_method=False,
-                                                                         order_length=False,total_amount=True)})
+                                                                         order_length=False,total_amount=True),
+                                             'top_products':top_products_df.to_dict('records')})
 @role_required()
 def addcategory(request):
     if request.method == 'POST':
