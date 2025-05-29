@@ -1,5 +1,5 @@
 import pandas as pd
-from store_app.models import OrderItem
+from .models import OrderItem
 
 def get_top_products(limit=5):
     qs = OrderItem.objects.select_related('product').all()

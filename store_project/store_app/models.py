@@ -63,3 +63,4 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price_of_purchase = models.IntegerField(null =True)
+    date_of_order = models.DateTimeField(auto_now_add=True,null=True)

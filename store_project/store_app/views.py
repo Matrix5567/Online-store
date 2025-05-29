@@ -14,6 +14,9 @@ from django.conf import settings
 from .decorator import role_required
 from .tasks import send_emails_to_users
 from .insights import get_top_products
+from sklearn.linear_model import LinearRegression
+import pandas as pd
+from datetime import timedelta
 
 # Create your views here.
 
@@ -267,56 +270,6 @@ def filter(request):
 
         return JsonResponse({'products': product_list,'section_name':filter_value})
 
-# @login_required()
-# def stripe_webhook(request):              ############### webhooks disabled for now
-#     print("webhook calleddddddddddd")
-#     # payload = request.body
-#     # sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
-#     #
-#     # try:
-#     #     event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
-#     # except ValueError as e:
-#     #     return HttpResponse(status=400)
-#     # except stripe.error.SignatureVerificationError as e:
-#     #     return HttpResponse(status=400)
-#     #
-#     # # Handle the event
-#     # if event['type'] == 'checkout.session.completed':
-#     #     session = event['data']['object']
-#     #
-#     #     # Extract data
-#     #     customer_email = session.get('customer_email')
-#     #     payment_intent = session.get('payment_intent')
-#     #     amount_total = session.get('amount_total') / 100  # Stripe stores in cents
-#     #     payment_status = session.get('payment_status')
-#     #     payment_method = session.get('payment_method_types', [''])[0]
-#     #     stripe_customer_id = session.get('customer')
-#     #
-#     #     # (Optional) Get user if you attach metadata
-#     #     user_id = session.get('metadata', {}).get('user_id')
-#     #     product_ids = session.get('metadata', {}).get('product_ids', '').split(',')
-#     #
-#     #     user = CustomUser.objects.get(id=user_id) if user_id else None
-#     #
-#     #     payment = Payment_History.objects.create(
-#     #         user=user,
-#     #         stripe_payment_intent=payment_intent,
-#     #         stripe_customer_id=stripe_customer_id,
-#     #         amount=amount_total,
-#     #         payment_method=payment_method,
-#     #         status=payment_status,
-#     #     )
-#     #
-#     #     for pid in product_ids:
-#     #         try:
-#     #             product = Products.objects.get(id=pid)
-#     #             payment.products.add(product)
-#     #         except Products.DoesNotExist:
-#     #             continue
-#     #
-#     #     payment.save()
-#     #
-#     # return HttpResponse(status=200)
 
 @role_required()
 def admin_dash(request):
@@ -421,3 +374,43 @@ def admin_payment_view(request):
 @role_required()
 def admin_products_view(request):
     return render(request,'admin_products_view.html',{'products':fetch_single_product(product_type=False, id=False)})
+
+
+@role_required()
+def demand_prediction_view(request):
+    # Load data from the OrderItem model
+    qs = OrderItem.objects.all().values('product__id', 'product__product_name', 'date_of_order', 'quantity')
+    df = pd.DataFrame(qs)
+
+    if df.empty:
+        print("no data entered")
+        return render(request, 'demand_prediction.html',
+                      {'predictions': {}, 'error': 'No data available for prediction.'})
+
+    df['date_of_order'] = pd.to_datetime(df['date_of_order'])
+    df_grouped = df.groupby(['product__id', 'product__product_name', 'date_of_order'])['quantity'].sum().reset_index()
+
+    predictions = {}
+
+    for (product_id, product_name), group in df_grouped.groupby(['product__id', 'product__product_name']):
+        group = group.sort_values('date_of_order')
+        group['days_since'] = (group['date_of_order'] - group['date_of_order'].min()).dt.days
+
+        X = group[['days_since']]
+        y = group['quantity']
+
+        if len(X) < 2:
+            continue  # Skip if not enough data for regression
+
+        model = LinearRegression()
+        model.fit(X, y)
+
+        # Predict for next 7 days
+        last_day = group['days_since'].max()
+        future_days = [last_day + i for i in range(1, 8)]
+        future_dates = [group['date_of_order'].max() + timedelta(days=i) for i in range(1, 8)]
+        predicted_quantities = model.predict([[day] for day in future_days])
+        print("predicted quantities",predicted_quantities)
+        predictions[product_name] = list(zip(future_dates, predicted_quantities.round(2)))
+    print("data entered",predictions)
+    return render(request, 'demand_prediction.html', {'predictions': predictions})
