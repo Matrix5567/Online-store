@@ -381,15 +381,14 @@ def demand_prediction_view(request):
     # Load data from the OrderItem model
     qs = OrderItem.objects.all().values('product__id', 'product__product_name', 'date_of_order', 'quantity')
     df = pd.DataFrame(qs)
-
+    #print("loaded df",df)
     if df.empty:
-        print("no data entered")
         return render(request, 'demand_prediction.html',
                       {'predictions': {}, 'error': 'No data available for prediction.'})
 
     df['date_of_order'] = pd.to_datetime(df['date_of_order'])
     df_grouped = df.groupby(['product__id', 'product__product_name', 'date_of_order'])['quantity'].sum().reset_index()
-
+    #print('df grouped',df_grouped)
     predictions = {}
 
     for (product_id, product_name), group in df_grouped.groupby(['product__id', 'product__product_name']):
@@ -409,8 +408,12 @@ def demand_prediction_view(request):
         last_day = group['days_since'].max()
         future_days = [last_day + i for i in range(1, 8)]
         future_dates = [group['date_of_order'].max() + timedelta(days=i) for i in range(1, 8)]
-        predicted_quantities = model.predict([[day] for day in future_days])
-        print("predicted quantities",predicted_quantities)
-        predictions[product_name] = list(zip(future_dates, predicted_quantities.round(2)))
-    print("data entered",predictions)
+
+        # Predict and clip negative values
+        future_X = pd.DataFrame(future_days, columns=['days_since'])  # Fixes the warning
+        predicted_quantities_raw = model.predict(future_X)
+        predicted_quantities = [max(0, round(qty, 2)) for qty in predicted_quantities_raw]
+
+        # Store predictions
+        predictions[product_name] = list(zip(future_dates, predicted_quantities))
     return render(request, 'demand_prediction.html', {'predictions': predictions})
